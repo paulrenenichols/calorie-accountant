@@ -1,7 +1,11 @@
 doctype html
-html
+html(ng-app="helloWorldApp")
   head
     title= title
-    link(rel='stylesheet', href='/css/main.css')
+    //- link(rel='stylesheet', href='/css/main.css')
   body
-    strong What what?
+    <hello-world value="Hello World" width="500px" height="500px"></hello-world>
+    script(type='text/javascript'
+           src='vendor/js/angular.js')
+    script(type='text/javascript'
+           src='js/hello-world.js')
