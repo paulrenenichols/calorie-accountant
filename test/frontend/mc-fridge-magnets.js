@@ -10,12 +10,28 @@ describe('mc-fridge-magnets', function() {
       mcFridgeMagnetsService = _mcFridgeMagnetsService_;
     }));
 
-    describe('.splitString()', function() {
-      it('should put a space before periods and commas that come at the end of words', function () {
+    describe('.splitStringIntoWordsAndPunctuation()', function() {
+      it('should break the input string into an array of strings', function () {
 
-        var string = "How are you doing, Tom.";
-        var expectedOutput = "How are you doing , Tom .";
-        expect(mcFridgeMagnetsService.splitString(string)).to.equal(expectedOutput);
+        var string = "How are you doing, Tom? I'm doing fine.  Look out!";
+        var expectedOutput = ["How", 
+                              "are", 
+                              "you", 
+                              "doing", 
+                              ",", 
+                              "Tom", 
+                              "?", 
+                              "I'm", 
+                              "doing", 
+                              "fine", 
+                              ".", 
+                              "Look", 
+                              "out", 
+                              "!"];
+
+        var output = mcFridgeMagnetsService.splitStringIntoWordsAndPunctuation(string);
+        console.log('output', output);
+        expect(output).to.deep.equal(expectedOutput);
       });
     });
   });
