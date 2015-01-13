@@ -1,11 +1,11 @@
 doctype html
-html(ng-app="helloWorldApp")
+html(ng-app="mcFridgeMagnets")
   head
     title= title
     //- link(rel='stylesheet', href='/css/main.css')
-  body
-    <hello-world value="Hello World" width="500px" height="500px"></hello-world>
+  body(ng-controller="mcFridgeMagnetsTestCtrl as ctrl")
+    <mc-fridge-magnets value="ctrl.text"></mc-fridge-magnets>
     script(type='text/javascript'
            src='vendor/js/angular.js')
     script(type='text/javascript'
-           src='js/hello-world.js')
+           src='js/mc-fridge-magnets.js')
