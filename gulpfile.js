@@ -1,8 +1,9 @@
 var gulp = require('gulp'),
     jade = require('gulp-jade'),
-    jade = require('gulp-sass'),
+    sass = require('gulp-sass'),
     run = require('gulp-run'),
     util = require('gulp-util'),
+    debug = require('gulp-debug'),
     clean = require('gulp-clean'),
     jshint = require('gulp-jshint');
 
@@ -27,8 +28,8 @@ var buildConfig = {
     },
     css: {
       project: {
-        src: 'source/frontend/css/*.scss',
-        dest: 'build/public/css'
+        src: 'source/frontend/css/**/*.scss',
+        dest: 'build/public/css/'
       }
     },
     test: {
@@ -80,10 +81,18 @@ gulp.task('build-server', ['build-clean'], function () {
 // Frontend Build Tasks
 
 gulp.task('build-frontend-css', function () {
-  
-  return gulp.src(buildConfig.frontend.css.src)
+
+  util.log(buildConfig.frontend.css.project.src);
+  util.log(buildConfig.frontend.css.project.dest);
+  return gulp.src(buildConfig.frontend.css.project.src)
+    .pipe(debug({
+      title: 'css-before'
+    }))
     .pipe(sass())
-    .pipe(gulp.dest(buildConfig.frontend.css.dest))
+    .pipe(debug({
+      title: 'css-after'
+    }))
+    .pipe(gulp.dest(buildConfig.frontend.css.project.dest));
 
 });
 
@@ -95,6 +104,9 @@ gulp.task('build-frontend-index-html', function () {
       locals: {
         title: "Hello World"
       }
+    }))
+    .pipe(debug({
+      title: 'html-after'
     }))
     .pipe(gulp.dest(buildConfig.frontend.index.dest))
 
@@ -152,3 +164,4 @@ gulp.task('run', ['build-frontend'], function () {
     }
   });
 });
+
