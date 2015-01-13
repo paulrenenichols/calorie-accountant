@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     jade = require('gulp-jade'),
+    jade = require('gulp-sass'),
     run = require('gulp-run'),
     util = require('gulp-util'),
     clean = require('gulp-clean'),
@@ -24,6 +25,12 @@ var buildConfig = {
         dest: 'build/public/vendor/js'
       }
     },
+    css: {
+      project: {
+        src: 'source/frontend/css/*.scss',
+        dest: 'build/public/css'
+      }
+    },
     test: {
       karmaConfigPath: '/test/karma.conf.js'
     }
@@ -45,26 +52,20 @@ gulp.task('lint-frontend-js-project', function () {
 
 });
 
-gulp.task('lint', ['lint-frontend-js-project']);
 
 // Test tasks
 
-gulp.task('test-dependencies', ['lint']);
-
-gulp.task('test-frontend-js-project', ['test-dependencies'], function (done) {
+gulp.task('test-frontend-js-project', ['lint-frontend-js-project'], function (done) {
   karma.start({
     configFile: __dirname + buildConfig.frontend.test.karmaConfigPath,
     singleRun: true
   }, done);
 });
 
-gulp.task('test', ['test-frontend-js-project']);
 
 // Build Clean Task
 
-gulp.task('build-dependencies', ['test']);
-
-gulp.task('build-clean', ['build-dependencies'], function () {
+gulp.task('build-clean', function () {
   return gulp.src('build', {read: false})
     .pipe(clean());
 })
@@ -78,7 +79,15 @@ gulp.task('build-server', ['build-clean'], function () {
 
 // Frontend Build Tasks
 
-gulp.task('build-frontend-index-html', ['build-server'], function () {
+gulp.task('build-frontend-css', function () {
+  
+  return gulp.src(buildConfig.frontend.css.src)
+    .pipe(sass())
+    .pipe(gulp.dest(buildConfig.frontend.css.dest))
+
+});
+
+gulp.task('build-frontend-index-html', function () {
   
   return gulp.src(buildConfig.frontend.index.src)
     .pipe(jade({
@@ -91,14 +100,14 @@ gulp.task('build-frontend-index-html', ['build-server'], function () {
 
 });
 
-gulp.task('build-frontend-js-vendor', ['build-server'], function () {
+gulp.task('build-frontend-js-vendor', function () {
   
   return gulp.src(buildConfig.frontend.js.vendor.src)
     .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
 
 });
 
-gulp.task('build-frontend-js-project-lint', function () {
+gulp.task('build-frontend-js-project-lint', ['test-frontend-js-project'], function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(jshint())
@@ -110,17 +119,17 @@ gulp.task('build-frontend-js-project-lint', function () {
 
 });
 
-gulp.task('build-frontend-js-project', ['build-server'], function () {
+gulp.task('build-frontend-js-project', function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(gulp.dest(buildConfig.frontend.js.project.dest));
 
 });
 
-gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-js-project', 'build-frontend-js-vendor']);
+gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css']);
 
 
-gulp.task('build-install', ['build-frontend'], function (cb) {
+gulp.task('server-build-install', ['build-server'], function (cb) {
   run('cd build && npm install > /dev/null').exec(function (err) {
     if (err) {
       util.log('An error occurred while attempting "build-install" task', err);
@@ -132,11 +141,8 @@ gulp.task('build-install', ['build-frontend'], function (cb) {
   });
 })
 
-gulp.task('build', ['build-clean', 'build-server', 'build-frontend', 'build-install'], function (cb) {
-  cb();
-});
 
-gulp.task('run', ['build'], function () {
+gulp.task('run', ['build-frontend'], function () {
   return run('cd build && npm start').exec(function (err) {
     if (err) {
       util.log('An error occurred while attempting "run" task', err);
@@ -146,5 +152,3 @@ gulp.task('run', ['build'], function () {
     }
   });
 });
-
-gulp.task('develop', ['build', 'run']);
