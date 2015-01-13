@@ -1,15 +1,15 @@
 angular.module('mcFridgeMagnets', [])
   .factory('mcFridgeMagnetsService', [function() {
 
-    var separatePeriodsAndCommasRegex = /\.\s|\.$|,/g;
-    var splitOnWhitespaceRegex = /\s/g;
+    var separatePeriodsAndCommasRegex = /[\.\?\!]\s|[\.\?\!]$|,/g;
+    var whitespaceRegex = /\s+/g;
 
     var service = {};
 
-    function splitString(str) {
-      return str.replace(separatePeriodsAndCommasRegex, " $&");
+    function splitStringIntoWordsAndPunctuation(str) {
+      return str.replace(separatePeriodsAndCommasRegex, " $&").split(whitespaceRegex);
     }
-    service.splitString = splitString;
+    service.splitStringIntoWordsAndPunctuation = splitStringIntoWordsAndPunctuation;
 
     return service;
   }]);
