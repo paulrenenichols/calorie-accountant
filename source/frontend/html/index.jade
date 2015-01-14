@@ -2,9 +2,9 @@ doctype html
 html(ng-app="mcFridgeMagnets")
   head
     title= title
-    //- link(rel='stylesheet', href='/css/main.css')
+    link(rel='stylesheet', href='/css/main.css')
   body(ng-controller="mcFridgeMagnetsTestCtrl as ctrl")
-    <mc-fridge-magnets value="ctrl.text"></mc-fridge-magnets>
+    mc-fridge-magnets(value="ctrl.text")
     script(type='text/javascript'
            src='vendor/js/angular.js')
     script(type='text/javascript'

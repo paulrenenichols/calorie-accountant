@@ -19,7 +19,7 @@ angular.module('mcFridgeMagnets', [])
         value: '='
       },
       restrict: 'E',
-      template: '<div ng-repeat="word in words track by $index" ng-bind="word"></div>',
+      template: '<div class="magnet" ng-repeat="word in words track by $index" ng-bind="word"></div>',
       link: function link(scope, iElement, iAttrs) {
         scope.words = [];
         scope.$watch('value', function () {
