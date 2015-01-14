@@ -165,3 +165,10 @@ gulp.task('run', ['build-frontend'], function () {
   });
 });
 
+gulp.task('watch-frontend', function () {
+  return gulp.watch([buildConfig.frontend.css.project.src, 
+                     buildConfig.frontend.js.project.src,
+                     buildConfig.frontend.index.src], ['run']);
+});
+
+
