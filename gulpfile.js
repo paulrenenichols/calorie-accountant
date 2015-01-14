@@ -28,7 +28,7 @@ var buildConfig = {
     },
     css: {
       project: {
-        src: 'source/frontend/css/**/*.scss',
+        src: 'source/frontend/css/**/*.sass',
         dest: 'build/public/css/'
       }
     },
