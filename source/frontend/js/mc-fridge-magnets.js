@@ -15,28 +15,28 @@ angular.module('mcFridgeMagnets', [])
   }])
   .directive('mcFridgeMagnets', ['mcFridgeMagnetsService', function(service) {
 
-    function dragStartHandler() {
-      console.log('dragStartHandler');
+    function dragStartHandler(e) {
+      console.log('dragStartHandler', angular.element(this).text(), e);
     }
 
-    function dragEnterHandler() {
-      console.log('dragEnterHandler');
+    function dragEnterHandler(e) {
+      console.log('dragEnterHandler', angular.element(this).text(), e);
     }
 
     function dragOverHandler(e) {
-      console.log('dragOverHandler', angular.element(this).text(), e);
+      // console.log('dragOverHandler', angular.element(this).text(), e);
     }
 
-    function dragLeaveHandler() {
-      console.log('dragLeaveHandler');
+    function dragLeaveHandler(e) {
+      console.log('dragLeaveHandler', angular.element(this).text(), e);
     }
 
-    function dragDropHandler() {
-      console.log('dragDropHandler');
+    function dragDropHandler(e) {
+      console.log('dragDropHandler', angular.element(this).text(), e);
     }
 
-    function dragEndHandler() {
-      console.log('dragEndHandler');
+    function dragEndHandler(e) {
+      console.log('dragEndHandler', angular.element(this).text(), e);
     }
 
     function bindDragHandlers(elements) {
