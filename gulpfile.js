@@ -18,11 +18,11 @@ var buildConfig = {
     },
     js: {
       project: {
-        src: 'source/frontend/js/**/*',
+        src: 'source/frontend/js/**/*.js',
         dest: 'build/public/js'
       },
       vendor: {
-        src: 'source/frontend/vendor/js/development/**/*',
+        src: 'source/frontend/vendor/js/development/**/*.js',
         dest: 'build/public/vendor/js'
       }
     },
