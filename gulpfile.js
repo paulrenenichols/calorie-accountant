@@ -138,11 +138,11 @@ gulp.task('build-frontend-js-project', function () {
 
 });
 
-gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css']);
+gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css'], function(done) { done(); });
 
 
 gulp.task('server-build-install', ['build-server'], function (cb) {
-  run('cd build && npm install > /dev/null').exec(function (err) {
+  run('cd build && npm install & > /dev/null').exec(function (err) {
     if (err) {
       util.log('An error occurred while attempting "build-install" task', err);
       cb(err);
@@ -154,7 +154,7 @@ gulp.task('server-build-install', ['build-server'], function (cb) {
 })
 
 
-gulp.task('run', ['build-frontend'], function () {
+gulp.task('run', function () {
   return run('cd build && npm start').exec(function (err) {
     if (err) {
       util.log('An error occurred while attempting "run" task', err);
@@ -165,10 +165,10 @@ gulp.task('run', ['build-frontend'], function () {
   });
 });
 
-gulp.task('watch-frontend', ['run'], function () {
-  return gulp.watch([buildConfig.frontend.css.project.src, 
-                     buildConfig.frontend.js.project.src,
-                     buildConfig.frontend.index.src], ['run']);
+gulp.task('watch-frontend', ['build-frontend'], function () {
+  gulp.watch([buildConfig.frontend.js.project.src,
+              buildConfig.frontend.index.src,
+              buildConfig.frontend.css.project.src], ['build-frontend']);
 });
 
 
