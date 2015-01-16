@@ -13,7 +13,7 @@ angular.module('mcFridgeMagnets', [])
 
     return service;
   }])
-  .directive('mcFridgeMagnets', ['mcFridgeMagnetsService', function(service) {
+  .directive('mcMagnet', [function () {
 
     function dragStartHandler(e) {
       console.log('dragStartHandler', angular.element(this).text(), e);
@@ -58,18 +58,31 @@ angular.module('mcFridgeMagnets', [])
     }
 
     var directiveDefinition = {
+      scope: false,
+      restrict: 'A',
+      link: function link(scope, iElement, iAttrs) {
+        var magnet = angular.element(iElement).attr('draggable', true);
+        bindDragHandlers(magnet);
+        magnet.on('$destroy', function () {
+          unbindDragHandlers(magnet);
+        });
+      }
+
+    };
+    return directiveDefinition;
+  }])
+  .directive('mcFridge', ['mcFridgeMagnetsService', function(service) {
+
+    var directiveDefinition = {
       scope: {
         value: '='
       },
       restrict: 'E',
-      template: '<div class="magnet" draggable="true" ng-repeat="word in words track by $index" ng-bind="word"></div>',
+      template: '<div class="magnet" mc-magnet ng-repeat="word in words track by $index" ng-bind="word"></div>',
       link: function link(scope, iElement, iAttrs) {
-        var container = angular.element(iElement);
         scope.words = [];
         scope.$watch('value', function () {
-          unbindDragHandlers(container);
           scope.words = service.splitStringIntoWordsAndPunctuation(scope.value);
-          bindDragHandlers(container);
         });
       }
 
