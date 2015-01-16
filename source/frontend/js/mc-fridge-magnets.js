@@ -59,6 +59,7 @@ angular.module('mcFridgeMagnets', [])
         dragSrcEl.innerHTML = this.innerHTML;
         this.innerHTML = e.dataTransfer.getData('text/html');
       }
+      this.style.border = 'none';
 
       console.log('dragDropHandler', angular.element(this).text(), e);
       return false;
