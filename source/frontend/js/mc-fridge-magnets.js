@@ -15,27 +15,58 @@ angular.module('mcFridgeMagnets', [])
   }])
   .directive('mcMagnet', [function () {
 
+    var dragSrcEl = null;
+
     function dragStartHandler(e) {
+      this.style.opacity = '0.4';
+
+      dragSrcEl = this;
+
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', this.innerHTML);
       console.log('dragStartHandler', angular.element(this).text(), e);
     }
 
     function dragEnterHandler(e) {
+      this.style.border = '2px dashed #000';
       console.log('dragEnterHandler', angular.element(this).text(), e);
     }
 
     function dragOverHandler(e) {
+      if (e.preventDefault) {
+        e.preventDefault(); // Necessary. Allows us to drop.
+      }
+
+      e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+
+      return false;
       // console.log('dragOverHandler', angular.element(this).text(), e);
     }
 
     function dragLeaveHandler(e) {
+      this.style.border = 'none';
       console.log('dragLeaveHandler', angular.element(this).text(), e);
     }
 
     function dragDropHandler(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation(); // Stops some browsers from redirecting.
+      }
+
+      // Don't do anything if dropping the same column we're dragging.
+      if (dragSrcEl != this) {
+        // Set the source column's HTML to the HTML of the column we dropped on.
+        dragSrcEl.innerHTML = this.innerHTML;
+        this.innerHTML = e.dataTransfer.getData('text/html');
+      }
+
       console.log('dragDropHandler', angular.element(this).text(), e);
+      return false;
+      
     }
 
     function dragEndHandler(e) {
+      this.style.opacity = '1';
       console.log('dragEndHandler', angular.element(this).text(), e);
     }
 
