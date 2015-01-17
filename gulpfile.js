@@ -96,7 +96,7 @@ gulp.task('build-frontend-css', function () {
 
 });
 
-gulp.task('build-frontend-index-html', function () {
+gulp.task('build-frontend-index-html', ['test-frontend-js-project'], function () {
   
   return gulp.src(buildConfig.frontend.index.src)
     .pipe(jade({
