@@ -93,7 +93,7 @@ angular.module('mcFridgeMagnets', [])
       scope: false,
       restrict: 'A',
       link: function link(scope, iElement, iAttrs) {
-        var magnet = angular.element(iElement).attr('draggable', true);
+        var magnet = angular.element(iElement).attr('draggable', true).addClass('magnet');
         bindDragHandlers(magnet);
         magnet.on('$destroy', function () {
           unbindDragHandlers(magnet);
@@ -104,13 +104,12 @@ angular.module('mcFridgeMagnets', [])
     return directiveDefinition;
   }])
   .directive('mcFridge', ['mcFridgeMagnetsService', function(service) {
-
     var directiveDefinition = {
       scope: {
         value: '='
       },
       restrict: 'E',
-      template: '<div class="magnet" mc-magnet ng-repeat="word in words track by $index" ng-bind="word"></div>',
+      template: '<div mc-magnet ng-repeat="word in words track by $index" ng-bind="word"></div>',
       link: function link(scope, iElement, iAttrs) {
         scope.words = [];
         scope.$watch('value', function () {
