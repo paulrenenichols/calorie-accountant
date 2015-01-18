@@ -85,13 +85,7 @@ gulp.task('build-frontend-css', function () {
   util.log(buildConfig.frontend.css.project.src);
   util.log(buildConfig.frontend.css.project.dest);
   return gulp.src(buildConfig.frontend.css.project.src)
-    .pipe(debug({
-      title: 'css-before'
-    }))
     .pipe(sass())
-    .pipe(debug({
-      title: 'css-after'
-    }))
     .pipe(gulp.dest(buildConfig.frontend.css.project.dest));
 
 });
@@ -104,9 +98,6 @@ gulp.task('build-frontend-index-html', ['test-frontend-js-project'], function ()
       locals: {
         title: "Hello World"
       }
-    }))
-    .pipe(debug({
-      title: 'html-after'
     }))
     .pipe(gulp.dest(buildConfig.frontend.index.dest))
 
