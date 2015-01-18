@@ -11,41 +11,61 @@ angular.module('mcFridgeMagnets', [])
     }
     service.splitStringIntoWordsAndPunctuation = splitStringIntoWordsAndPunctuation;
 
-    return service;
-  }])
-  .directive('mcMagnet', [function () {
+    function createFridgeStringFromMagnets(magnets) {
 
-    var dragSrcEl = null;
+      var fridgeString = "";
+      for(var i = 0; i < magnets.length; i++) {
+        magnetText = angular.element(magnets[i]).text();
+
+        if ((magnetText === '.') || 
+            (magnetText === '?') || 
+            (magnetText === '!')) {
+
+          fridgeString += magnetText + " ";
+        }
+        else if (magnetText == ',') {
+          fridgeString += magnetText;
+        }
+        else {
+          fridgeString += " " + magnetText;
+        }
+
+      }
+
+      return fridgeString;
+    }
+    service.createFridgeStringFromMagnets = createFridgeStringFromMagnets;
+
+    var dragSourceElement = null;
 
     function dragStartHandler(e) {
-      this.style.opacity = '0.4';
+      angular.element(this).addClass('moving');
 
-      dragSrcEl = this;
+      dragSourceElement = this;
 
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/html', this.innerHTML);
-      console.log('dragStartHandler', angular.element(this).text(), e);
     }
 
     function dragEnterHandler(e) {
-      this.style.border = '2px dashed #000';
-      console.log('dragEnterHandler', angular.element(this).text(), e);
+      if (this != dragSourceElement) {
+        angular.element(this).addClass('entered');
+      }
     }
 
     function dragOverHandler(e) {
+      // According to this article I read, this is necessary to make droping work
       if (e.preventDefault) {
-        e.preventDefault(); // Necessary. Allows us to drop.
+        e.preventDefault(); 
       }
 
-      e.dataTransfer.dropEffect = 'move';  // See the section on the DataTransfer object.
+      e.dataTransfer.dropEffect = 'move';
 
       return false;
-      // console.log('dragOverHandler', angular.element(this).text(), e);
     }
 
     function dragLeaveHandler(e) {
-      this.style.border = 'none';
-      console.log('dragLeaveHandler', angular.element(this).text(), e);
+      angular.element(this).removeClass('entered');
     }
 
     function dragDropHandler(e) {
@@ -53,22 +73,17 @@ angular.module('mcFridgeMagnets', [])
         e.stopPropagation(); // Stops some browsers from redirecting.
       }
 
-      // Don't do anything if dropping the same column we're dragging.
-      if (dragSrcEl != this) {
-        // Set the source column's HTML to the HTML of the column we dropped on.
-        dragSrcEl.innerHTML = this.innerHTML;
+      if (dragSourceElement != this) {
+        dragSourceElement.innerHTML = this.innerHTML;
         this.innerHTML = e.dataTransfer.getData('text/html');
       }
-      this.style.border = 'none';
+      angular.element(this).removeClass('entered');
 
-      console.log('dragDropHandler', angular.element(this).text(), e);
       return false;
-      
     }
 
     function dragEndHandler(e) {
-      this.style.opacity = '1';
-      console.log('dragEndHandler', angular.element(this).text(), e);
+      angular.element(this).removeClass('moving');
     }
 
     function bindDragHandlers(elements) {
@@ -79,6 +94,7 @@ angular.module('mcFridgeMagnets', [])
       elements.on('drop', dragDropHandler);
       elements.on('dragend', dragEndHandler);
     }
+    service.bindDragHandlers = bindDragHandlers;
 
     function unbindDragHandlers(elements) {
       elements.off('dragstart', dragStartHandler);
@@ -88,15 +104,19 @@ angular.module('mcFridgeMagnets', [])
       elements.off('drop', dragDropHandler);
       elements.off('dragend', dragEndHandler);
     }
+    service.unbindDragHandlers = unbindDragHandlers;
 
+    return service;
+  }])
+  .directive('mcMagnet', ['mcFridgeMagnetsService', function (service) {
     var directiveDefinition = {
       scope: false,
       restrict: 'A',
       link: function link(scope, iElement, iAttrs) {
         var magnet = angular.element(iElement).attr('draggable', true).addClass('magnet');
-        bindDragHandlers(magnet);
+        service.bindDragHandlers(magnet);
         magnet.on('$destroy', function () {
-          unbindDragHandlers(magnet);
+          service.unbindDragHandlers(magnet);
         });
       }
 
@@ -111,9 +131,13 @@ angular.module('mcFridgeMagnets', [])
       restrict: 'E',
       template: '<div mc-magnet ng-repeat="word in words track by $index" ng-bind="word"></div>',
       link: function link(scope, iElement, iAttrs) {
+        var fridge = angular.element(iElement);
         scope.words = [];
         scope.$watch('value', function () {
           scope.words = service.splitStringIntoWordsAndPunctuation(scope.value);
+        });
+        fridge.on('dragend', function () {
+          console.log(scope.words);
         });
       }
 
