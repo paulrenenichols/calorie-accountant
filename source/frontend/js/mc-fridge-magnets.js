@@ -7,6 +7,9 @@ angular.module('mcFridgeMagnets', [])
     var service = {};
 
     function splitStringIntoWordsAndPunctuation(str) {
+      if (str === "") {
+        return [];
+      }
       return str.replace(separatePeriodsAndCommasRegex, " $&").split(whitespaceRegex);
     }
     service.splitStringIntoWordsAndPunctuation = splitStringIntoWordsAndPunctuation;

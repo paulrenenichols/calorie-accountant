@@ -30,9 +30,16 @@ describe('mc-fridge-magnets', function() {
                               "!"];
 
         var output = mcFridgeMagnetsService.splitStringIntoWordsAndPunctuation(string);
-        console.log('output', output);
         expect(output).to.deep.equal(expectedOutput);
       });
+
+      it('should return an array of length 0 when given an empty string', function () {
+        var emptyString = "";
+        var output = mcFridgeMagnetsService.splitStringIntoWordsAndPunctuation(emptyString);
+        expect(output).to.have.length(0);
+      });
     });
+
+
   });
 });
