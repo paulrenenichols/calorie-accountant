@@ -14,7 +14,24 @@ angular.module('mcFridgeMagnets', [])
     }
     service.splitStringIntoWordsAndPunctuation = splitStringIntoWordsAndPunctuation;
 
+    function isPunctuation(str) {
+      return (str === ',') || (str === '.') || (str === '?') || (str === '!');
+    }
+
     function createSentenceFromWords(words) {
+      
+      var sentence = "";
+
+      angular.forEach(words, function (word) {
+        if (isPunctuation(word)) {
+          sentence += word + ' ';
+        }
+        else {
+          sentence += ' ' +word;
+        }
+      });
+
+      return sentence;
     }
     service.createSentenceFromWords = createSentenceFromWords;
 
