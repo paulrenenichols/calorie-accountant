@@ -45,7 +45,7 @@ var buildConfig = {
 
 // Lint tasks
 
-gulp.task('lint-frontend-js-project', function () {
+gulp.task('lint-frontend', function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(jshint())
@@ -60,7 +60,7 @@ gulp.task('lint-frontend-js-project', function () {
 
 // Test tasks
 
-gulp.task('test-frontend-js-project', ['lint-frontend-js-project'], function (done) {
+gulp.task('test-frontend', ['lint-frontend'], function (done) {
   karma.start({
     configFile: __dirname + buildConfig.frontend.test.karmaConfigPath,
     singleRun: true
@@ -94,7 +94,7 @@ gulp.task('build-frontend-css', function () {
 
 });
 
-gulp.task('build-frontend-index-html', ['test-frontend-js-project'], function () {
+gulp.task('build-frontend-index-html', ['test-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.index.src)
     .pipe(jade({
@@ -114,7 +114,7 @@ gulp.task('build-frontend-js-vendor', function () {
 
 });
 
-gulp.task('build-frontend-js-project-lint', ['test-frontend-js-project'], function () {
+gulp.task('build-frontend-js-project-lint', ['test-frontend'], function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(jshint())
