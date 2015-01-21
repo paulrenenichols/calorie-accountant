@@ -43,6 +43,8 @@ angular.module('mcFridgeMagnets', [])
   }])
   .factory('mcMagnetService', [function() {
 
+    var service = {};
+
     var dragSourceElement = null;
 
     function dragStartHandler(e) {
