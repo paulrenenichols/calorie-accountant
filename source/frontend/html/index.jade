@@ -4,8 +4,11 @@ html(ng-app="mcFridgeMagnets")
     title= title
     link(rel='stylesheet', href='/css/main.css')
   body(ng-controller="mcFridgeMagnetsDemoCtrl as ctrl")
-    textarea(ng-model="ctrl.text")
-    mc-fridge(value="ctrl.text")
+    h1 Fridge Magnet Demo
+    section
+      textarea(ng-model="ctrl.text")
+      mc-fridge(value="ctrl.text")
+    
     script(type='text/javascript'
            src='vendor/js/angular.js')
     script(type='text/javascript'
