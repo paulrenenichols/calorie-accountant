@@ -22,12 +22,17 @@ angular.module('mcFridgeMagnets', [])
       
       var sentence = "";
 
-      angular.forEach(words, function (word) {
-        if (isPunctuation(word)) {
-          sentence += word + ' ';
+      angular.forEach(words, function (word, index) {
+        if ((index === 0) || (index === words.length - 1)) {
+          sentence += word;
         }
         else {
-          sentence += ' ' +word;
+          if (isPunctuation(word)) {
+            sentence += word + ' ';
+          }
+          else {
+            sentence += ' ' +word;
+          }
         }
       });
 
@@ -49,7 +54,7 @@ angular.module('mcFridgeMagnets', [])
       dragSourceElement = this;
 
       e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/html', this.innerHTML);
+      e.dataTransfer.setData('text', this.innerText);
     }
 
     function dragEnterHandler(e) {
@@ -79,8 +84,8 @@ angular.module('mcFridgeMagnets', [])
       }
 
       if (dragSourceElement != this) {
-        dragSourceElement.innerHTML = this.innerHTML;
-        this.innerHTML = e.dataTransfer.getData('text/html');
+        dragSourceElement.innerText = this.innerText;
+        this.innerText = e.dataTransfer.getData('text');
       }
       angular.element(this).removeClass('entered');
 
@@ -142,7 +147,12 @@ angular.module('mcFridgeMagnets', [])
           scope.words = service.splitStringIntoWordsAndPunctuation(scope.value);
         });
         fridge.on('dragend', function () {
-          console.log(scope.words);
+          var newWords = [];
+          angular.forEach(fridge.children(), function (child) {
+            newWords.push(child.innerText);
+          });
+          scope.value = service.createSentenceFromWords(newWords);
+          scope.$apply();
         });
       }
 
