@@ -141,18 +141,27 @@ angular.module('mcFridgeMagnets', [])
       restrict: 'E',
       template: '<div mc-magnet ng-repeat="word in words track by $index" ng-bind="word"></div>',
       link: function link(scope, iElement, iAttrs) {
+        
         var fridge = angular.element(iElement);
+        
         scope.words = [];
+
         scope.$watch('value', function () {
           scope.words = service.splitStringIntoWordsAndPunctuation(scope.value);
         });
+
         fridge.on('dragend', function () {
+
+          // Read the words off of the magnet
           var newWords = [];
           angular.forEach(fridge.children(), function (child) {
             newWords.push(child.innerText);
           });
+
+          // Construct a 'sentence' from the magnet
           scope.value = service.createSentenceFromWords(newWords);
-          scope.$apply();
+
+          scope.$apply();  // Let Angular know that we've updated the model, otherwise no two-way binding.
         });
       }
 
