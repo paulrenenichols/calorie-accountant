@@ -90,4 +90,27 @@ describe('mc-fridge-magnets', function() {
       });
     });
   });
+
+  describe('mcFridgeMagnetsDemoCtrl', function () {
+
+    var scope;
+    var ctrl;
+
+    beforeEach(inject(function($rootScope, $controller) {
+      scope = $rootScope.$new();
+      ctrl = $controller('mcFridgeMagnetsDemoCtrl', { $scope: scope });
+    }));
+
+    it('should exist', function () {
+      expect(ctrl).to.exist;
+    });
+
+    it('should not be empty', function () {
+      expect(ctrl).to.not.be.empty;
+    });
+
+    it('should have a property named "text" that is a string', function () {
+      expect(ctrl).to.have.property('text').that.is.a('string');
+    });
+  });
 });

@@ -132,6 +132,6 @@ angular.module('mcFridgeMagnets', [])
     };
     return directiveDefinition;
   }])
-  .controller('mcFridgeMagnetsTestCtrl', [function () {
+  .controller('mcFridgeMagnetsDemoCtrl', [function () {
     this.text = "How are you doing, Tom? I'm doing fine.  Look out!";
   }]);
