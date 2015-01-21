@@ -14,30 +14,9 @@ angular.module('mcFridgeMagnets', [])
     }
     service.splitStringIntoWordsAndPunctuation = splitStringIntoWordsAndPunctuation;
 
-    function createFridgeStringFromMagnets(magnets) {
-
-      var fridgeString = "";
-      for(var i = 0; i < magnets.length; i++) {
-        magnetText = angular.element(magnets[i]).text();
-
-        if ((magnetText === '.') || 
-            (magnetText === '?') || 
-            (magnetText === '!')) {
-
-          fridgeString += magnetText + " ";
-        }
-        else if (magnetText == ',') {
-          fridgeString += magnetText;
-        }
-        else {
-          fridgeString += " " + magnetText;
-        }
-
-      }
-
-      return fridgeString;
+    function createSentenceFromWords(words) {
     }
-    service.createFridgeStringFromMagnets = createFridgeStringFromMagnets;
+    service.createSentenceFromWords = createSentenceFromWords;
 
     return service;
   }])
