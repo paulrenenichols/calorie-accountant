@@ -2,12 +2,12 @@ describe('mc-fridge-magnets', function() {
 
   beforeEach(module('mcFridgeMagnets'));
 
-  describe('mcFridgeMagnetService', function() {
+  describe('mcFridgeService', function() {
 
-    var mcFridgeMagnetsService;
+    var mcFridgeService;
 
-    beforeEach(inject(function(_mcFridgeMagnetsService_) {
-      mcFridgeMagnetsService = _mcFridgeMagnetsService_;
+    beforeEach(inject(function(_mcFridgeService_) {
+      mcFridgeService = _mcFridgeService_;
     }));
 
     describe('.splitStringIntoWordsAndPunctuation()', function() {
@@ -29,13 +29,13 @@ describe('mc-fridge-magnets', function() {
                               "out", 
                               "!"];
 
-        var output = mcFridgeMagnetsService.splitStringIntoWordsAndPunctuation(string);
+        var output = mcFridgeService.splitStringIntoWordsAndPunctuation(string);
         expect(output).to.deep.equal(expectedOutput);
       });
 
       it('should return an array of length 0 when given an empty string', function () {
         var emptyString = "";
-        var output = mcFridgeMagnetsService.splitStringIntoWordsAndPunctuation(emptyString);
+        var output = mcFridgeService.splitStringIntoWordsAndPunctuation(emptyString);
         expect(output).to.have.length(0);
       });
     });

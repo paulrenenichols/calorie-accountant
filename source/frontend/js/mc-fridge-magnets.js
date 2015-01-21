@@ -1,5 +1,5 @@
 angular.module('mcFridgeMagnets', [])
-  .factory('mcFridgeMagnetsService', [function() {
+  .factory('mcFridgeService', [function() {
 
     var separatePeriodsAndCommasRegex = /[\.\?\!]\s|[\.\?\!]$|,/g;
     var whitespaceRegex = /\s+/g;
@@ -111,7 +111,7 @@ angular.module('mcFridgeMagnets', [])
 
     return service;
   }])
-  .directive('mcMagnet', ['mcFridgeMagnetsService', function (service) {
+  .directive('mcMagnet', ['mcFridgeService', function (service) {
     var directiveDefinition = {
       scope: false,
       restrict: 'A',
@@ -126,7 +126,7 @@ angular.module('mcFridgeMagnets', [])
     };
     return directiveDefinition;
   }])
-  .directive('mcFridge', ['mcFridgeMagnetsService', function(service) {
+  .directive('mcFridge', ['mcFridgeService', function(service) {
     var directiveDefinition = {
       scope: {
         value: '='
