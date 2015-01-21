@@ -21,6 +21,10 @@ var buildConfig = {
         src: 'source/frontend/js/**/*.js',
         dest: 'build/public/js'
       },
+      test: {
+        src: 'test/frontend/**/*.js',
+        dest: null
+      },
       vendor: {
         src: 'source/frontend/vendor/js/development/**/*.js',
         dest: 'build/public/vendor/js'
@@ -158,6 +162,7 @@ gulp.task('run', function () {
 
 gulp.task('watch-frontend', ['build-frontend'], function () {
   gulp.watch([buildConfig.frontend.js.project.src,
+              buildConfig.frontend.js.test.src,
               buildConfig.frontend.index.src,
               buildConfig.frontend.css.project.src], ['build-frontend']);
 });
