@@ -23,7 +23,7 @@ angular.module('mcFridgeMagnets', [])
       var sentence = "";
 
       angular.forEach(words, function (word, index) {
-        if ((index === 0) || (index === words.length - 1)) {
+        if (index === 0) {
           sentence += word;
         }
         else {
