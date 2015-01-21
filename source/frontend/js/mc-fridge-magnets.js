@@ -39,6 +39,10 @@ angular.module('mcFridgeMagnets', [])
     }
     service.createFridgeStringFromMagnets = createFridgeStringFromMagnets;
 
+    return service;
+  }])
+  .factory('mcMagnetService', [function() {
+
     var dragSourceElement = null;
 
     function dragStartHandler(e) {
@@ -111,7 +115,7 @@ angular.module('mcFridgeMagnets', [])
 
     return service;
   }])
-  .directive('mcMagnet', ['mcFridgeService', function (service) {
+  .directive('mcMagnet', ['mcMagnetService', function (service) {
     var directiveDefinition = {
       scope: false,
       restrict: 'A',
