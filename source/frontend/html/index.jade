@@ -1,15 +1,14 @@
 doctype html
-html(ng-app="mcFridgeMagnets")
+html(ng-app="calorieAccountant")
   head
     title= title
     link(rel='stylesheet', href='/css/main.css')
-  body(ng-controller="mcFridgeMagnetsDemoCtrl as ctrl")
-    h1 Fridge Magnet Demo
-    section
-      textarea(ng-model="ctrl.text")
-      mc-fridge(value="ctrl.text")
+  body(ng-controller="indexCtrl as ctrl")
+    h1 Calorie Accountant
+
+    p(ng-bind="ctrl.hello")
     
     script(type='text/javascript'
            src='vendor/js/angular.js')
     script(type='text/javascript'
-           src='js/mc-fridge-magnets.js')
+           src='js/calorie-accountant.js')

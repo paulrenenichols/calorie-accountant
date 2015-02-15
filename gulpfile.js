@@ -100,7 +100,7 @@ gulp.task('build-frontend-index-html', ['test-frontend'], function () {
     .pipe(jade({
       pretty: true,
       locals: {
-        title: "Fridge Magnet Demo"
+        title: "Calorie Accountant"
       }
     }))
     .pipe(gulp.dest(buildConfig.frontend.index.dest))
