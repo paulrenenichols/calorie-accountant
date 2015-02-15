@@ -1,4 +1,14 @@
 angular.module('calorieAccountant', [])
   .controller('indexCtrl', [function () {
-    this.hello = "Hello World";
+    var self = this;
+
+    self.items = [];
+    self.newItem = '';
+    
+    this.addNewItem = function() {
+      if (self.newItem !== "") {
+        self.items.unshift(self.newItem);
+        self.newItem = "";
+      }
+    };
   }]);

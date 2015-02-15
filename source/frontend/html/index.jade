@@ -6,7 +6,12 @@ html(ng-app="calorieAccountant")
   body(ng-controller="indexCtrl as ctrl")
     h1 Calorie Accountant
 
-    p(ng-bind="ctrl.hello")
+    input(type="text"
+          ng-model="ctrl.newItem")
+    button(ng-click="ctrl.addNewItem()") Add Item
+
+    ul
+      li(ng-repeat="item in ctrl.items" ng-bind="item")
     
     script(type='text/javascript'
            src='vendor/js/angular.js')
