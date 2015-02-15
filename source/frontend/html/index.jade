@@ -7,11 +7,18 @@ html(ng-app="calorieAccountant")
     h1 Calorie Accountant
 
     input(type="text"
-          ng-model="ctrl.newItem")
+          ng-model="ctrl.newItem.value")
+    select(ng-model="ctrl.newItem.type" ng-options="type for type in ctrl.types")
     button(ng-click="ctrl.addNewItem()") Add Item
 
     ul
-      li(ng-repeat="item in ctrl.items" ng-bind="item")
+      li(ng-repeat="item in ctrl.items")
+        div
+          | Type 
+          span(ng-bind="item.type")
+        div
+          | value 
+          span(ng-bind="item.value")
     
     script(type='text/javascript'
            src='vendor/js/angular.js')
