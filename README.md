@@ -1,2 +1,4 @@
-mindless-chatter
+Calorie Accountant App
 ================
+
+
