@@ -1,14 +1,21 @@
 angular.module('calorieAccountant', []) // Defines the application (no dependencies injected)
-  .factory('calorieService', [function () {
+  .factory('calorieService', ['$http', function ($http) {
     var service = {};
-    var items = [];
+
+    var url = "http://localhost:3000/api/";
 
     function getItems() {
-      return items;
+      return $http.get(url + 'get-items');
     }
 
     function addItem(item) {
-      items.unshift(item);
+      var req = {
+        method: 'POST',
+        url: url + 'add-item',
+        data: item
+      };
+
+      return $http(req);
     }
 
 
@@ -43,8 +50,17 @@ angular.module('calorieAccountant', []) // Defines the application (no dependenc
     ];
     
     this.addNewItem = function() {  // addNewItem function
-        calorieService.addItem(self.newItem);
-        self.items = calorieService.getItems();
-        self.newItem = angular.copy(defaultItem);  // create a new copy of the default item to store this data
+        var addItemPromise = calorieService.addItem(self.newItem);
+        var getItemsPromise = addItemPromise.then(function (response) {
+          return calorieService.getItems();
+        })
+        .catch(function (reason) {
+          console.log('addItem failed bc: ', reason);
+        });
+
+        getItemsPromise.then(function (response) {
+          self.items = response.data;
+          self.newItem = angular.copy(defaultItem);  // create a new copy of the default item to store this data
+        });
     };
   }]);
