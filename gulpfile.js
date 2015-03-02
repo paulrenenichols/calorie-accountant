@@ -5,7 +5,18 @@ var gulp = require('gulp'),
     util = require('gulp-util'),
     debug = require('gulp-debug'),
     clean = require('gulp-clean'),
-    jshint = require('gulp-jshint');
+    jshint = require('gulp-jshint'),
+    nodeUtil = require('util'),
+    through2 = require('through2');
+
+var consoleStream = through2.obj(function(file, encoding, cb) {
+  //console.log(JSON.stringify(file, null, 2));
+  file.contents.pipe(process.stdout);
+
+  this.push(file);
+  cb();
+});
+
 
 var karma = require('karma').server;
 
@@ -103,7 +114,7 @@ gulp.task('build-frontend-index-html', ['test-frontend'], function () {
         title: "Calorie Accountant"
       }
     }))
-    .pipe(gulp.dest(buildConfig.frontend.index.dest))
+    .pipe(gulp.dest(buildConfig.frontend.index.dest));
 
 });
 
@@ -157,7 +168,8 @@ gulp.task('run', function () {
     else {
       util.log('run complete');
     }
-  });
+  })
+  .pipe(consoleStream);
 });
 
 gulp.task('watch-frontend', ['build-frontend'], function () {
