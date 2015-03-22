@@ -11,13 +11,15 @@ MongoClient.connect(url, function(err, db) {
 });
 
 function addItemToDB(item, callback) {
-  var collection = mongodb.collection(items);
+  console.log('addItemToDB', item);
+  var collection = mongodb.collection('items');
   collection.insert(item, callback);
 }
 
 function getItemsFromDB(callback) {
-  var collection = mongodb.collection(items);
-  collection.find({}).toArray(callback);
+  console.log('getItemsFromDB');
+  var collection = mongodb.collection('items');
+  collection.find().toArray(callback);
 }
 
 function getItems(callback) {
@@ -29,7 +31,7 @@ function addItem(item, callback) {
 }
 
 router.post('/add-item', function(req, res) {
-
+  console.log('add item');
   addItem(req.body, function(err, result) {
     if (err) {
       console.log('add items fail: ', err);
@@ -45,7 +47,7 @@ router.post('/add-item', function(req, res) {
 });
 
 router.get('/get-items', function(req, res) {
-  console.log('/get-items', JSON.stringify(items, null, 2));
+  console.log('/get-items');
   getItems(function(err, items){
     if (err) {
       console.log('get items fail ', err);
