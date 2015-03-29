@@ -31,6 +31,10 @@ var buildConfig = {
       src: 'source/frontend/html/index.jade',
       dest: 'build/public'
     },
+    templates: {
+      src: 'source/frontend/html/templates/**/*.jade',
+      dest: 'build/public/templates'
+    },
     js: {
       project: {
         src: 'source/frontend/js/**/*.js',
@@ -122,6 +126,17 @@ gulp.task('build-frontend-index-html', ['test-frontend'], function () {
 
 });
 
+gulp.task('build-frontend-templates-html', ['test-frontend'], function () {
+  
+  return gulp.src(buildConfig.frontend.templates.src)
+    .pipe(jade({
+      pretty: true,
+      locals: {}
+    }))
+    .pipe(gulp.dest(buildConfig.frontend.templates.dest));
+
+});
+
 gulp.task('build-frontend-js-vendor', function () {
   
   return gulp.src(buildConfig.frontend.js.vendor.src)
@@ -148,7 +163,7 @@ gulp.task('build-frontend-js-project', function () {
 
 });
 
-gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css'], function(done) { done(); });
+gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-templates-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css'], function(done) { done(); });
 
 
 gulp.task('server-build-install', ['build-server'], function (cb) {
