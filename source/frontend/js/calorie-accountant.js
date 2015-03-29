@@ -48,7 +48,13 @@ angular.module('calorieAccountant', []) // Defines the application (no dependenc
         label: 'Weight'
       }
     ];
-    
+
+
+    var getItemsPromise = calorieService.getItems();
+    getItemsPromise.then(function (response) {
+      self.items = response.data;
+    });
+
     this.addNewItem = function() {  // addNewItem function
         var addItemPromise = calorieService.addItem(self.newItem);
         var getItemsPromise = addItemPromise.then(function (response) {
