@@ -7,7 +7,11 @@ var gulp = require('gulp'),
     clean = require('gulp-clean'),
     jshint = require('gulp-jshint'),
     nodeUtil = require('util'),
-    through2 = require('through2');
+    through2 = require('through2'),
+    npm = require('npm'),
+    _ = require('lodash');
+
+var buildPackageJson = require('./source/server/package.json');
 
 var consoleStream = through2.obj(function(file, encoding, cb) {
   //console.log(JSON.stringify(file, null, 2));
@@ -148,14 +152,21 @@ gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-js-pro
 
 
 gulp.task('server-build-install', ['build-server'], function (cb) {
-  run('cd build && npm install & > /dev/null').exec(function (err) {
-    if (err) {
-      util.log('An error occurred while attempting "build-install" task', err);
-      cb(err);
-    }
-    else {
-      cb();
-    }
+  var buildPackageJsonWithPrefix = {
+    prefix: 'build'
+  };
+
+  _.merge(buildPackageJsonWithPrefix, buildPackageJson);
+
+  npm.load(buildPackageJsonWithPrefix, function () {
+    npm.commands.install(function (error) {
+      if (error) {
+        cb(error);
+      }
+      else {
+        cb();
+      }
+    });
   });
 })
 
