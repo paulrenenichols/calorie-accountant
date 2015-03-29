@@ -1,4 +1,22 @@
-angular.module('calorieAccountant', []) // Defines the application (no dependencies injected)
+angular.module('calorieAccountant', ['ui.router']) // Defines the application (no dependencies injected)
+  .config(['$stateProvider', function($stateProvider) {
+    $stateProvider.state('home', {
+      url: '/',
+      templateUrl: 'templates/home.html',
+      controller: 'indexCtrl as ctrl'
+
+    });
+    $stateProvider.state('login', {
+      url: '/login',
+      templateUrl: 'templates/login.html',
+      controller: 'loginCtrl as ctrl'
+
+    });
+
+  }])
+  .run(['$state', function($state) {
+    $state.go('home');
+  }])
   .factory('calorieService', ['$http', function ($http) {
     var service = {};
 
@@ -22,6 +40,9 @@ angular.module('calorieAccountant', []) // Defines the application (no dependenc
     service.getItems = getItems;
     service.addItem = addItem;
     return service;
+  }])
+  .controller('loginCtrl', ['calorieService', function (calorieService) {
+    console.log('login');
   }])
   .controller('indexCtrl', ['calorieService', function (calorieService) {  // Defines indexCtrl that watches the DOM
     var self = this; // save this as a value to make it easier to keep track of
