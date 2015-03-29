@@ -42,7 +42,14 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
     return service;
   }])
   .controller('loginCtrl', ['calorieService', function (calorieService) {
+    var self = this;
     console.log('login');
+    this.Login = function() { 
+      var email = self.email;
+      var password = self.password;
+      console.log('your password is: ');
+      console.log(self.password);
+    };
   }])
   .controller('indexCtrl', ['calorieService', function (calorieService) {  // Defines indexCtrl that watches the DOM
     var self = this; // save this as a value to make it easier to keep track of
