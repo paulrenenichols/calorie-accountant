@@ -186,16 +186,44 @@ gulp.task('server-build-install', ['build-server'], function (cb) {
 })
 
 
-gulp.task('run', function () {
-  return run('cd build && npm start').exec(function (err) {
-    if (err) {
-      util.log('An error occurred while attempting "run" task', err);
-    }
-    else {
-      util.log('run complete');
-    }
-  })
-  .pipe(consoleStream);
+gulp.task('run', function (cb) {
+ 
+  var runDirectoryPrefix = {
+    prefix: 'build'
+  };
+
+  _.merge(runDirectoryPrefix, buildPackageJson);
+
+  npm.load(runDirectoryPrefix, function () {
+    npm.commands.start(function (error) {
+      if (error) {
+        cb(error);
+      }
+      else {
+        cb();
+      }
+    });
+  });
+});
+
+gulp.task('stop', function (cb) {
+ 
+  var runDirectoryPrefix = {
+    prefix: 'build'
+  };
+
+  _.merge(runDirectoryPrefix, buildPackageJson);
+
+  npm.load(runDirectoryPrefix, function () {
+    npm.commands.stop(function (error) {
+      if (error) {
+        cb(error);
+      }
+      else {
+        cb();
+      }
+    });
+  });
 });
 
 gulp.task('watch-frontend', ['build-frontend'], function () {
