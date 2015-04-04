@@ -15,7 +15,7 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
 
   }])
   .run(['$state', function($state) {
-    $state.go('home');
+    $state.go('login');
   }])
   .factory('calorieService', ['$http', function ($http) {
     var service = {};
@@ -41,7 +41,7 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
     service.addItem = addItem;
     return service;
   }])
-  .controller('loginCtrl', ['calorieService', function (calorieService) {
+  .controller('loginCtrl', ['calorieService', '$state', function (calorieService, $state) {
     var self = this;
     console.log('login');
     this.Login = function() { 
@@ -49,6 +49,10 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
       var password = self.password;
       console.log('your password is: ');
       console.log(self.password);
+
+      if ((email !== "") && (password !== "")) {
+        $state.go('home');
+      }
     };
   }])
   .controller('indexCtrl', ['calorieService', function (calorieService) {  // Defines indexCtrl that watches the DOM
