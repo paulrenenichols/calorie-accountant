@@ -1,17 +1,22 @@
 angular.module('calorieAccountant', ['ui.router']) // Defines the application (no dependencies injected)
   .config(['$stateProvider', function($stateProvider) {
-    $stateProvider.state('home', {
-      url: '/',
-      templateUrl: 'templates/home.html',
-      controller: 'indexCtrl as ctrl'
+    $stateProvider
+      .state('home', {
+        url: '/',
+        templateUrl: 'templates/home.html',
+        controller: 'indexCtrl as ctrl'
+      })
+      .state('login', {
+        url: '/login',
+        templateUrl: 'templates/login.html',
+        controller: 'loginCtrl as ctrl'
+      })
+      .state('signup', {
+        url: '/signup',
+        templateUrl: 'templates/signup.html',
+        controller: 'signupCtrl as ctrl'
+      });
 
-    });
-    $stateProvider.state('login', {
-      url: '/login',
-      templateUrl: 'templates/login.html',
-      controller: 'loginCtrl as ctrl'
-
-    });
 
   }])
   .run(['$state', function($state) {
@@ -41,18 +46,88 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
     service.addItem = addItem;
     return service;
   }])
-  .controller('loginCtrl', ['calorieService', '$state', function (calorieService, $state) {
+  .factory('usersService', ['$http', function ($http) {
+    var service = {};
+
+    var url = "http://localhost:3000/api/users";
+
+    function signup(user) {
+      var req = {
+        method: 'POST',
+        url: url + '/signup',
+        data: user
+      };
+
+      return $http(req);
+    }
+
+    function auth(user) {
+      var req = {
+        method: 'POST',
+        url: url + '/auth',
+        data: user
+      };
+
+      return $http(req);
+    }
+
+    service.signup = signup;
+    service.auth = auth;
+
+    return service;
+  }])
+  .controller('loginCtrl', ['usersService', '$state', function (usersService, $state) {
     var self = this;
     console.log('login');
-    this.Login = function() { 
-      var email = self.email;
-      var password = self.password;
-      console.log('your password is: ');
-      console.log(self.password);
 
-      if ((email !== "") && (password !== "")) {
-        $state.go('home');
-      }
+    self.user = {
+      email: "",
+      password: ""
+    };
+
+    this.Login = function() { 
+
+      console.log('user', JSON.stringify(self.user, null, 2));
+
+      usersService.auth(self.user).then(
+        function(res) {
+          if (res.status === 200) {
+            $state.go('home');
+          }
+          else if (res.status === 500) {
+            console.log('bad login, oops');
+          }
+        }, 
+        function(reason) {
+          console.log('auth request fail');
+        }
+      );
+    };
+  }])
+  .controller('signupCtrl', ['usersService', '$state', function (usersService, $state) {
+    var self = this;
+    console.log('signup');
+
+    self.user = {
+      email: "",
+      password: ""
+    };
+
+    this.signup = function() { 
+
+      usersService.signup(self.user).then(
+        function(res) {
+          if (res.status === 200) {
+            $state.go('login');
+          }
+          else if (res.status === 500) {
+            console.log('bad signup, oops');
+          }
+        }, 
+        function(reason) {
+          console.log('signup request fail');
+        }
+      );
     };
   }])
   .controller('indexCtrl', ['calorieService', function (calorieService) {  // Defines indexCtrl that watches the DOM
