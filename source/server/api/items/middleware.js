@@ -1,11 +1,11 @@
 
-function middleware(mongo){
+function middleware(db){
 
   var mw = {};
 
   function addItem(req, res) {
     console.log('add item');
-    mongo.addItem(req.body, function(err, result) {
+    db.addItem(req.body, function(err, result) {
       if (err) {
         console.log('add items fail: ', err);
         res.status(500).json({
@@ -21,7 +21,7 @@ function middleware(mongo){
 
   function getItems(req, res) {
     console.log('/get-items');
-    mongo.getItems(function(err, items){
+    db.getItems(function(err, items){
       if (err) {
         console.log('get items fail ', err);
         res.status(500).json({
