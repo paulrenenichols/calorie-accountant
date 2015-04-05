@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 
 var itemsRouter = require('./items/router');
+var usersRouter = require('./users/router');
 
 var mongodb = null;
 
@@ -12,6 +13,7 @@ MongoClient.connect(url, function(err, db) {
   mongodb = db;
 
   router.use('/items', itemsRouter(db));
+  router.use('/users', usersRouter(db));
 
 });
 
