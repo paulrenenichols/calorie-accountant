@@ -20,16 +20,16 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
   .factory('calorieService', ['$http', function ($http) {
     var service = {};
 
-    var url = "http://localhost:3000/api/";
+    var url = "http://localhost:3000/api/items";
 
     function getItems() {
-      return $http.get(url + 'get-items');
+      return $http.get(url);
     }
 
     function addItem(item) {
       var req = {
         method: 'POST',
-        url: url + 'add-item',
+        url: url,
         data: item
       };
 

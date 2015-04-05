@@ -1,7 +1,7 @@
 
 function middleware(mongo){
 
-  var middleObj = {};
+  var mw = {};
 
   function addItem(req, res) {
     console.log('add item');
@@ -36,10 +36,10 @@ function middleware(mongo){
     });
   }
 
-  middleObj.addItem = addItem;
-  middleObj.getItems = getItems;
+  mw.addItem = addItem;
+  mw.getItems = getItems;
 
-  return middleObj;
+  return mw;
 
 }
 

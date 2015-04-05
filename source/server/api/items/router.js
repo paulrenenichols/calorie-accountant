@@ -4,12 +4,12 @@ var router = express.Router();
 
 function itemsRouter(mongodb) {
 
-  var mongo = require('./mongo')(mongodb);
-  var middleware = require('./middleware')(mongo);
+  var database = require('./database')(mongodb);
+  var middleware = require('./middleware')(database);
 
-  router.post('/add-item', middleware.addItem);
+  router.post('/', middleware.addItem);
 
-  router.get('/get-items', middleware.getItems);
+  router.get('/', middleware.getItems);
 
   return router;
 }
