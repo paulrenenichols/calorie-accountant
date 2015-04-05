@@ -11,7 +11,7 @@ MongoClient.connect(url, function(err, db) {
   console.log('connected to server');
   mongodb = db;
 
-  router.use('/', itemsRouter(db));
+  router.use('/items', itemsRouter(db));
 
 });
 

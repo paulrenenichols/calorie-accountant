@@ -1,7 +1,7 @@
  
-function mongo(mongodb){
+function database(mongodb){
 
-  var obj = {};
+  var db = {};
 
   function addItem(item, callback) {
     console.log('addItemToDB', item);
@@ -15,10 +15,10 @@ function mongo(mongodb){
     collection.find().toArray(callback);
   }
 
-  obj.addItem = addItem;
-  obj.getItems = getItems;
+  db.addItem = addItem;
+  db.getItems = getItems;
 
-  return obj;
+  return db;
 }
 
-module.exports = mongo;
+module.exports = database;
