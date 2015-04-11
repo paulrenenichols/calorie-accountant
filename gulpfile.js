@@ -68,10 +68,16 @@ gulp.task('lint-frontend', function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(jshint())
-    .pipe(jshint.reporter('default', { 
-      verbose: true,
-      browser: true
-    }))
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(jshint.reporter('fail'));
+
+});
+
+gulp.task('lint-server', function () {
+  
+  return gulp.src('source/server/**/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('jshint-stylish'))
     .pipe(jshint.reporter('fail'));
 
 });
