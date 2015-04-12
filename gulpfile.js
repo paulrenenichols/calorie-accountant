@@ -95,7 +95,7 @@ gulp.task('test-frontend', ['lint-frontend'], function (done) {
 
 // Build Clean Task
 
-gulp.task('build-clean', function () {
+gulp.task('build-clean', ['lint-server'], function () {
   return gulp.src('build', {read: false})
     .pipe(clean());
 })

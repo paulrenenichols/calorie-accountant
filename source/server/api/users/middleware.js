@@ -1,11 +1,12 @@
 
-function middleware(db){
+
+function middleware(api){
 
   var mw = {};
 
   function addUser(req, res) {
     console.log('add user');
-    db.addUser(req.body, function(err, result) {
+    api.addUser(req.body, function(err, result) {
       if (err) {
         console.log('add user fail: ', err);
         res.status(500).json({
@@ -21,7 +22,7 @@ function middleware(db){
 
   function authorizeUser(req, res) {
     console.log('authorizeUser', 'user', JSON.stringify(req.body, null, 2));
-    db.getUser(req.body.email, function(err, user){
+    api.authorizeUser(req.body, function(err, user) {
       if (err) {
         console.log('authorize user fail ', err);
         res.status(500).json({
@@ -30,17 +31,9 @@ function middleware(db){
         });
       }
       else {
-        if(user.password === req.body.password) {
-          res.status(200).json({
-            status: "logged in"
-          });
-        }
-        else {
-          res.status(500).json({
-            message: 'auth failed'
-          });
-        }
-        
+        res.status(200).json({
+          status: "logged in"
+        });
       }
     });
   }
