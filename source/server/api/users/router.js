@@ -5,7 +5,9 @@ var router = express.Router();
 function usersRouter(mongodb) {
 
   var database = require('./database')(mongodb);
-  var middleware = require('./middleware')(database);
+  var api = require('./api')(database);
+  var middleware = require('./middleware')(api);
+
 
   router.post('/signup', middleware.addUser);
 
