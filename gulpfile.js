@@ -9,7 +9,8 @@ var gulp = require('gulp'),
     nodeUtil = require('util'),
     through2 = require('through2'),
     npm = require('npm'),
-    _ = require('lodash');
+    _ = require('lodash'),
+    mocha = require('gulp-mocha');
 
 var buildPackageJson = require('./source/server/package.json');
 
@@ -92,6 +93,10 @@ gulp.task('test-frontend', ['lint-frontend'], function (done) {
   }, done);
 });
 
+gulp.task('test-server', ['lint-server'], function (done) {
+  return gulp.src('test/server/**/*.js', {read: false})
+          .pipe(mocha({reporter: 'nyan'}));
+});
 
 // Build Clean Task
 
