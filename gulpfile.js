@@ -14,6 +14,8 @@ var gulp = require('gulp'),
 
 var buildPackageJson = require('./source/server/package.json');
 
+var projectPackageJson = require('./package.json');
+
 var consoleStream = through2.obj(function(file, encoding, cb) {
   //console.log(JSON.stringify(file, null, 2));
   file.contents.pipe(process.stdout);
@@ -62,6 +64,21 @@ var buildConfig = {
   }
 };
 
+// NPM install for project
+
+gulp.task('npm-install', function (cb) {
+
+  npm.load(projectPackageJson, function () {
+    npm.commands.install(function (error) {
+      if (error) {
+        cb(error);
+      }
+      else {
+        cb();
+      }
+    });
+  });
+})
 
 // Lint tasks
 
@@ -95,12 +112,12 @@ gulp.task('test-frontend', ['lint-frontend'], function (done) {
 
 gulp.task('test-server', ['lint-server'], function (done) {
   return gulp.src('test/server/**/*.js', {read: false})
-          .pipe(mocha({reporter: 'nyan'}));
+          .pipe(mocha({reporter: 'spec'}));
 });
 
 // Build Clean Task
 
-gulp.task('build-clean', ['lint-server'], function () {
+gulp.task('build-clean', ['test-server'], function () {
   return gulp.src('build', {read: false})
     .pipe(clean());
 })
