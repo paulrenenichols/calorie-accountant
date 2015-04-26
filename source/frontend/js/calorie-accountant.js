@@ -1,4 +1,4 @@
-angular.module('calorieAccountant', ['ui.router']) // Defines the application (no dependencies injected)
+angular.module('calorieAccountant', ['ui.router'])
   .config(['$stateProvider', function($stateProvider) {
     $stateProvider
       .state('home', {
@@ -130,16 +130,16 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
       );
     };
   }])
-  .controller('indexCtrl', ['calorieService', function (calorieService) {  // Defines indexCtrl that watches the DOM
-    var self = this; // save this as a value to make it easier to keep track of
+  .controller('indexCtrl', ['calorieService', function (calorieService) {
+    var self = this;
 
-    self.items = [];  // initialize the items array
-    var defaultItem = {  // Define the default item object. This is a template for all user entries 
+    self.items = [];
+    var defaultItem = {
       userID: 1,
       type: 'caloriesConsumed',
       value: 0
     };
-    self.newItem = angular.copy(defaultItem);  // make an instance of default item
+    self.newItem = angular.copy(defaultItem);
 
     self.types = [
       { 
@@ -162,7 +162,7 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
       self.items = response.data;
     });
 
-    this.addNewItem = function() {  // addNewItem function
+    this.addNewItem = function() {
         var addItemPromise = calorieService.addItem(self.newItem);
         var getItemsPromise = addItemPromise.then(function (response) {
           return calorieService.getItems();
@@ -173,7 +173,7 @@ angular.module('calorieAccountant', ['ui.router']) // Defines the application (n
 
         getItemsPromise.then(function (response) {
           self.items = response.data;
-          self.newItem = angular.copy(defaultItem);  // create a new copy of the default item to store this data
+          self.newItem = angular.copy(defaultItem);
         });
     };
   }]);
