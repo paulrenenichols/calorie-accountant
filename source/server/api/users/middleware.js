@@ -1,23 +1,24 @@
-
+var Q = require('q');
 
 function middleware(api){
 
   var mw = {};
 
-  function addUser(req, res) {
-    console.log('add user');
-    api.addUser(req.body, function(err, result) {
-      if (err) {
-        console.log('add user fail: ', err);
-        res.status(500).json({
-          error: err, 
-          message: 'insert failure' 
-        });
-      }
-      else {
-        res.status(200).json({});
-      }
-    });
+  function addUser(req) {
+    console.log('mw addUser');
+    api.addUser(req.body)
+      .then(
+        function(result) {
+          res.status(200).json({});
+        },
+        function(reason) {
+          console.log('add User fail middleware: ', reason);
+          res.status(500).json({
+            error: reason, 
+            message: 'addUser failure' 
+          });
+        }
+      );
   }
 
   function authorizeUser(req, res) {
