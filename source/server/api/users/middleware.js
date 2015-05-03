@@ -4,15 +4,16 @@ function middleware(api){
 
   var mw = {};
 
-  function addUser(req) {
+  function addUser(req, res) {
     console.log('mw addUser');
     api.addUser(req.body)
       .then(
         function(result) {
+          console.log('mw addUser: ', 'success');
           res.status(200).json({});
         },
         function(reason) {
-          console.log('add User fail middleware: ', reason);
+          console.log('mw addUser: ', 'FAIL: ', reason);
           res.status(500).json({
             error: reason, 
             message: 'addUser failure' 
@@ -22,21 +23,23 @@ function middleware(api){
   }
 
   function authorizeUser(req, res) {
-    console.log('authorizeUser', 'user', JSON.stringify(req.body, null, 2));
-    api.authorizeUser(req.body, function(err, user) {
-      if (err) {
-        console.log('authorize user fail ', err);
-        res.status(500).json({
-          error: err,
-          message: 'get failure'
-        });
-      }
-      else {
-        res.status(200).json({
-          status: "logged in"
-        });
-      }
-    });
+    console.log('mw authorizeUser: ', 'user: ', JSON.stringify(req.body, null, 2));
+    api.authorizeUser(req.body)
+      .then(
+        function (result) {
+          console.log('mw authorizeUser success ');
+          res.status(200).json({
+            status: "logged in"
+          });
+        },
+        function (reason) {
+          console.log('mw authorizeUser FAIL ', err);
+          res.status(500).json({
+            error: err,
+            message: 'authorization failure'
+          });
+        }
+      );
   }
 
   mw.addUser = addUser;

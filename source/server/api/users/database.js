@@ -11,27 +11,41 @@ function database(mongodb){
     var deferred = Q.defer();
 
     collection.insert(user, function(err, result) {
-      console.log('db addUser', 'error', err, 'result', result);
       if (err) {
+        console.log('db addUser', 'error', err);
         deferred.reject(err);
       }
       else {
+        console.log('db addUser', 'success');
         deferred.resolve(result);
       }
     });
 
     return deferred.promise;
-
-//    return Q.ninvoke(collection, "insert", "user").done(function (result){
-//    });
   }
 
-  function getUser(userEmail, callback) {
+  function getUser(userEmail) {
     console.log('getUser');
     var collection = mongodb.collection('users');
-    collection.findOne({
-      email: userEmail
-    }, callback);
+
+    var deferred = Q.defer();
+
+    collection.findOne(
+      {
+        email: userEmail
+      }, 
+      function (err, result){
+        if(err){
+          console.log('db getUser', 'error', err);
+          deferred.reject(err);
+        }
+        else {
+          console.log('db getUser', 'success');
+          deferred.resolve(result);
+        }
+      }
+    );
+    return deferred.promise;
   }
 
   db.addUser = addUser;
