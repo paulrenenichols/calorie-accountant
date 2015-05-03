@@ -1,66 +1,80 @@
 var bcrypt = require("bcrypt");
+var Q = require('q');
 
 function api(db) {
 
   var obj = {};
 
-  function hashPassword(user, callback) {
+  function generateSalt() {
+    var deferred = Q.defer();
+
     bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(user.password, salt, function(err, hash) {
-        if (err) {
-          callback(err, user);
-        }
-        else {
-          delete user.password;
-          user.hash = hash;
-          callback(null, user);
-        }
-      });
-    });
-  }
-
-  function addUser(user, callback) {
-    hashPassword(user, function(err, user) {
-      if(err) {
-        callback(err, user);
-      }
-      else {
-        db.addUser(user, function(err, result) {
-          if (err) {
-            callback(err, user);
-          }
-          else {
-            callback(null, result);
-          }
-        });
-      }
-    });
-  }
-
-  function authorizeUser(user, callback){
-    hashPassword(user, function(err, user){
-
       if(err){
-        callback(err, user);
+        console.log('api generateSalt', 'error', err);
+        deferred.reject(err);
       }
       else {
-        db.getUser(user.email, function(err, dbUser){
-          if (err) {
-            callback(err, dbUser);
-          }
-          else {
-            if(user.hash === dbUser.hash) {
-              callback(null, user);
+        console.log('api generateSalt', 'resolved');
+        deferred.resolve(salt);
+      }
+    });
+
+    return deferred.promise;
+  }
+
+  function hashPassword(password, salt) {
+
+    var deferred = Q.defer();
+
+    bcrypt.hash(password, salt, function(err, hash) {
+
+      if (err) {
+        console.log('api hashPassword', 'error', err);
+        deferred.reject(err);
+      }
+      else {
+        console.log('api hashPassword', 'resolved');
+        deferred.resolve(hash);
+      }
+    });
+
+    return deferred.promise;
+  }
+
+  function addUser(user) {
+    return generateSalt()
+      .then( function (salt) {
+        console.log('api addUser', 'salt success', salt);
+        return hashPassword(user.password, salt)
+          .then( function (hash){
+            console.log('api addUser', 'hash success', hash);
+            delete user.password;
+            user.salt = salt;
+            user.hash = hash;
+            return db.addUser(user);
+          });
+      });
+  }
+
+  function authorizeUser(user){
+    return db.getUser(user.email)
+      .then( function (dbUser){
+
+        return hashPassword(user.password, dbUser.salt)
+          .then( function (hash) {
+            console.log('user', user, 'dbUser', dbUser);
+            if(hash === dbUser.hash) {
+              console.log('api authorizeUser', 'authorization success');
+              user._id = dbUser._id;
+              return Q(user);
             }
             else {
-              callback(err, user);
+              console.log('api authorizeUser', 'authorization FAIL');
+              return Q.reject("failed user authorization");
             }
-            
-          }
-        });
-      }
-    });
-  }
+          });
+      });
+    }
 
   obj.addUser = addUser;
   obj.authorizeUser = authorizeUser;
