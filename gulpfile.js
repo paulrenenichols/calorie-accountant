@@ -54,8 +54,11 @@ var buildConfig = {
     },
     css: {
       project: {
-        src: 'source/frontend/css/**/*.sass',
+        src: 'source/frontend/css/**/*.scss',
         dest: 'build/public/css/'
+      },
+      vendor: {
+        src: 'source/frontend/vendor/css/**/*.scss'
       }
     },
     test: {
@@ -133,9 +136,9 @@ gulp.task('build-server', ['build-clean'], function () {
 
 gulp.task('build-frontend-css', function () {
 
-  util.log(buildConfig.frontend.css.project.src);
+  util.log(buildConfig.frontend.css.project.src, buildConfig.frontend.css.vendor.src);
   util.log(buildConfig.frontend.css.project.dest);
-  return gulp.src(buildConfig.frontend.css.project.src)
+  return gulp.src([buildConfig.frontend.css.vendor.src, buildConfig.frontend.css.project.src], { cwd: 'source/frontend/css' })
     .pipe(sass())
     .pipe(gulp.dest(buildConfig.frontend.css.project.dest));
 
