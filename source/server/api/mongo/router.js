@@ -1,14 +1,17 @@
+
 var express = require('express');
 var router = express.Router();
 
 
+
 function mongoRouter(mongodb) {
 
-  var database = require('./database')(mongodb);
-  var middleware = require('./middleware')(database);
+  var mongoDatabasesRouter = require('./databases/router')(mongodb);
+  var mongoCollectionRouter = require('./collections/router')(mongodb);
 
 
-  router.get('/', middleware.getDB);
+  router.use('/databases', mongoDatabasesRouter);
+  router.use('/collections', mongoCollectionRouter);
 
   return router;
 }
