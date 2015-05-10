@@ -6,16 +6,14 @@ var router = express.Router();
 
 function mongoRouter(mongodb) {
 
-  var mongoDatabasesRouter = require('./mongo/databases/router')(mongodb);
-  var mongoCollectionRouter = require('./mongo/collections/router')(mongodb);
+  var mongoDatabasesRouter = require('./databases/router')(mongodb);
+  var mongoCollectionRouter = require('./collections/router')(mongodb);
 
 
-  router.use('/', mongoDatabasesRouter);
-  router.use('/collections/:collection', mongoCollectionRouter);
-
-
+  router.use('/databases', mongoDatabasesRouter);
+  router.use('/collections', mongoCollectionRouter);
 
   return router;
 }
 
-module.exports = router;
+module.exports = mongoRouter;
