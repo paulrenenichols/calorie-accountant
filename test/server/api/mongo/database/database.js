@@ -4,7 +4,7 @@ var chai = require('chai');
 var expect = require('chai').expect;
 var sinon = require('sinon');
 
-var database = require('../../../../source/server/api/mongo/database');
+var database = require('../../../../../source/server/api/mongo/databases/database');
 
 
 var mockAdminDB = {
