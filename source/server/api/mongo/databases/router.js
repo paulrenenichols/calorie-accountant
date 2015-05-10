@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 
-function mongoRouter(mongodb) {
+function mongoDatabasesRouter(mongodb) {
 
   var database = require('./database')(mongodb);
   var middleware = require('./middleware')(database);
@@ -13,4 +13,4 @@ function mongoRouter(mongodb) {
   return router;
 }
 
-module.exports = mongoRouter;
+module.exports = mongoDatabasesRouter;

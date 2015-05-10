@@ -4,7 +4,7 @@ function database(mongodb){
 
   var db = {};
 
-  function addCollection(name, callback) {
+  function addCollection(name) {
     
     var deferred = Q.defer();
 
@@ -20,7 +20,7 @@ function database(mongodb){
     });
   }
 
-  function removeCollection(name, callback){
+  function removeCollection(name){
 
     var deferred = Q.defer();
 
