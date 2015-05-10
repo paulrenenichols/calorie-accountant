@@ -1,3 +1,4 @@
+var _ = require('lodash');
 
 
 function middleware(db){
@@ -10,7 +11,8 @@ function middleware(db){
       .then (
         function(result) {
           console.log('mw getCollections: ', 'success');
-          res.status(200).json({});
+          var collectionNames = _.map(result, function(value) { return value.collectionName; });
+          res.status(200).json(collectionNames);
         },
         function(reason) {
           console.log('mw getCollections: ', err);
@@ -18,16 +20,19 @@ function middleware(db){
             error: err, 
             message: 'mw getCollections failure' 
           });
-        );
+        }
+      );
   }
 
   function addCollection(req, res) {
     console.log('mw addCollection');
-    db.addCollection(req.body)
+    db.addCollection(req.params.collection)
       .then(
         function(result) {
           console.log('mw addCollection: ', 'success');
-          res.status(200).json({});
+          res.status(200).json({
+            message: "created collection: " + result.collectionName
+          });
         },
         function(reason) {
           console.log('mw addCollection: ', 'FAIL: ', reason);
@@ -42,11 +47,13 @@ function middleware(db){
 
   function removeCollection(req, res) {
     console.log('mw removeCollection');
-    db.removeCollection(req.body)
+    db.removeCollection(req.params.collection)
       .then(
         function(result) {
           console.log('mw removeCollection: ', 'success');
-          res.status(200).json({});
+          res.status(200).json({
+            message: "killed collection (only its documents weep for its passage):" + result
+          });
         },
         function(reason) {
           console.log('mw removeCollection: ', 'FAIL: ', reason);
