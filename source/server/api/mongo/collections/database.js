@@ -8,7 +8,7 @@ function database(mongodb){
     
     var deferred = Q.defer();
 
-    db.createCollection(name, {}, function(err, collection) {
+    mongodb.createCollection(name, {}, function(err, collection) {
       if (err) {
         console.log('db collections', 'error', err);
         deferred.reject(err);
@@ -18,22 +18,26 @@ function database(mongodb){
         deferred.resolve(collection);
       }
     });
+    return deferred.promise;
   }
 
   function removeCollection(name){
 
     var deferred = Q.defer();
 
-    db.dropCollection(name, {}, function(err, result){
+    console.log('db remove collections', name);
+
+    mongodb.dropCollection(name, function(err, result){
       if (err) {
-        console.log('db collections', 'error', err);
+        console.log('db remove collections', 'error', err);
         deferred.reject(err);
       }
       else {
-        console.log('db collections', 'success');
+        console.log('db remove collections', 'success', result);
         deferred.resolve(result);
       }
     });
+    return deferred.promise;
   }
 
 
@@ -51,7 +55,7 @@ function database(mongodb){
         deferred.resolve(collections);
       }
     });
-    
+    return deferred.promise;
   }
 
   db.addCollection = addCollection;
