@@ -10,9 +10,9 @@ function mongoCollectionRouter(mongodb) {
 
   router.get('/', middleware.getCollections);
 
-  router.get('/', middleware.addCollection);
+  router.post('/', middleware.addCollection);
 
-  router.get('/', middleware.removeCollection);
+  router.delete('/', middleware.removeCollection);
 
   return router;
 }
