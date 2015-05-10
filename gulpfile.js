@@ -55,11 +55,15 @@ var buildConfig = {
     css: {
       project: {
         src: 'source/frontend/css/**/*.scss',
-        dest: 'build/public/css/'
+        dest: 'build/public/css'
       },
       vendor: {
         src: 'source/frontend/vendor/css/**/*.scss'
       }
+    },
+    img: {
+      src: 'source/frontend/img/**/*',
+      dest: 'build/public/img'
     },
     test: {
       karmaConfigPath: '/test/karma.conf.js'
@@ -134,11 +138,16 @@ gulp.task('build-server', ['build-clean'], function () {
 
 // Frontend Build Tasks
 
+gulp.task('build-frontend-copy-img', function () {
+  return gulp.src(buildConfig.frontend.img.src)
+    .pipe(gulp.dest(buildConfig.frontend.img.dest));
+});
+
 gulp.task('build-frontend-css', function () {
 
   util.log(buildConfig.frontend.css.project.src, buildConfig.frontend.css.vendor.src);
   util.log(buildConfig.frontend.css.project.dest);
-  return gulp.src([buildConfig.frontend.css.vendor.src, buildConfig.frontend.css.project.src], { cwd: 'source/frontend/css' })
+  return gulp.src([buildConfig.frontend.css.vendor.src, buildConfig.frontend.css.project.src])
     .pipe(sass())
     .pipe(gulp.dest(buildConfig.frontend.css.project.dest));
 
@@ -194,7 +203,7 @@ gulp.task('build-frontend-js-project', function () {
 
 });
 
-gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-templates-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css'], function(done) { done(); });
+gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-templates-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img'], function(done) { done(); });
 
 
 gulp.task('server-build-install', ['build-server'], function (cb) {
