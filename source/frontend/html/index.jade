@@ -1,17 +1,28 @@
 doctype html
 html(ng-app="calorieAccountant")
   head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='css/main.css')
+    link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' type='text/css')
     title= title
-    link(rel='stylesheet', href='/css/main.css')
   body
-    nav
+    header
+      div(id="logo")
+      div(id="ca-hamburger-menu") Menu
+      div(id="ca-add-menu-trigger") Add
+
+    nav(id="main-nav")
       ul
         li: a(ui-sref="home") Home
         li: a(ui-sref="login") Log In
         li: a(ui-sref="signup") Sign Up
         li: a(ui-sref="mongo") MongoDB Admin
 
-    div(ui-view)
+    main(ui-view)
+      div(id="heading")
+      div(id="container")
+      div(id="footer")
     
     script(type='text/javascript'
            src='vendor/js/angular.js')
