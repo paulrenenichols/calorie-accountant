@@ -168,7 +168,7 @@ Form
 
 -------------------------------- */
 
-.cd-form {
+.ca-form {
   width: 90%;
   max-width: $M; // breakpoints inside partials > _layout.scss
   margin: 4em auto;
@@ -191,13 +191,13 @@ Form
     margin: 20px 0;
   }
 
-  h4, .cd-label {
+  h4, .ca-label {
     font-size: 1.3rem;
     color: darken($color-3, 30%);
     margin-bottom: 10px;
   }
 
-  .cd-label {
+  .ca-label {
     display: block;
   }
 
@@ -235,7 +235,7 @@ Form
     }
   }
 
-  .cd-select {
+  .ca-select {
     /* select element wapper */
     position: relative;
 
@@ -252,7 +252,7 @@ Form
       width: 16px;
       height: 16px;
 
-      background: url('../img/cd-icon-arrow.svg') no-repeat center center;
+      background: url('../img/ca-icon-arrow.svg') no-repeat center center;
       pointer-events: none;
     }
   }
@@ -266,12 +266,12 @@ Form
     display: none;
   }
 
-  .cd-form-list {
+  .ca-form-list {
     margin-top: 16px;
     @include clearfix;
   }
 
-  .cd-form-list li {
+  .ca-form-list li {
     /* wrapper for radio and checkbox input types */
     display: inline-block;
     position: relative;
@@ -341,12 +341,12 @@ Form
 
   input[type="radio"] + label::after {
     /* custom image for radio button */
-    background-image: url('../img/cd-icon-radio.svg');
+    background-image: url('../img/ca-icon-radio.svg');
   }
 
   input[type="checkbox"] + label::after {
     /* custom image for checkbox */
-    background-image: url('../img/cd-icon-check.svg');
+    background-image: url('../img/ca-icon-check.svg');
   }
 
   input[type="radio"]:focus + label::before,
@@ -401,7 +401,7 @@ Form
   }
 
   [required] {
-    background: url('../img/cd-required.svg') no-repeat top right;
+    background: url('../img/ca-required.svg') no-repeat top right;
   }
 
   .error-message p {
@@ -429,7 +429,7 @@ Form
       margin-top: 20px;
     }
 
-    h4, .cd-label {
+    h4, .ca-label {
       font-size: 1.4rem;
       margin-bottom: 10px;
     }
@@ -459,49 +459,49 @@ Custom icons
 
 -------------------------------- */
 
-.cd-form {
+.ca-form {
   .icon input, .icon select, .icon textarea {
     padding-left: 54px !important;
   }
 
   .user {
-    background: url('../img/cd-icon-user.svg') no-repeat 16px center;
+    background: url('../img/ca-icon-user.svg') no-repeat 16px center;
   }
 
   [required].user {
-    background: url('../img/cd-icon-user.svg') no-repeat 16px center, 
+    background: url('../img/ca-icon-user.svg') no-repeat 16px center, 
           url('../img/cd-required.svg') no-repeat top right;
   }
 
   .company {
-    background: url('../img/cd-icon-company.svg') no-repeat 16px center;
+    background: url('../img/ca-icon-company.svg') no-repeat 16px center;
   }
 
   [required].company {
-    background: url('../img/cd-icon-company.svg') no-repeat 16px center, 
+    background: url('../img/ca-icon-company.svg') no-repeat 16px center, 
           url('../img/cd-required.svg') no-repeat top right;
   }
 
   .email {
-    background: url('../img/cd-icon-email.svg') no-repeat 16px center;
+    background: url('../img/ca-icon-email.svg') no-repeat 16px center;
   }
 
   [required].email {
-    background: url('../img/cd-icon-email.svg') no-repeat 16px center, 
+    background: url('../img/ca-icon-email.svg') no-repeat 16px center, 
           url('../img/cd-required.svg') no-repeat top right;
   }
 
   .budget {
-    background: url('../img/cd-icon-budget.svg') no-repeat 16px center;
+    background: url('../img/ca-icon-budget.svg') no-repeat 16px center;
   }
 
   .message {
-    background: url('../img/cd-icon-message.svg') no-repeat 16px 16px;
+    background: url('../img/ca-icon-message.svg') no-repeat 16px 16px;
   }
 
   [required].message {
-    background: url('../img/cd-icon-message.svg') no-repeat 16px 16px, 
-          url('../img/cd-required.svg') no-repeat top right;
+    background: url('../img/ca-icon-message.svg') no-repeat 16px 16px, 
+          url('../img/ca-required.svg') no-repeat top right;
   }
 }
 
@@ -516,7 +516,7 @@ FLoating labels
     margin: 28px 0;
   }
 
-  .cd-label {
+  .ca-label {
     position: absolute;
     top: 16px;
     left: 16px;
@@ -525,11 +525,11 @@ FLoating labels
     @include transition(top .2s, left .2s, font-size .2s);
   }
 
-  .icon .cd-label {
+  .icon .ca-label {
     left: 56px;
   }
 
-  .cd-label.float {
+  .ca-label.float {
     /* move label out the input field */
     font-size: 1.2rem;
     top: -16px;
@@ -543,7 +543,7 @@ FLoating labels
       margin-top: 16px;
     }
 
-    .cd-label {
+    .ca-label {
       top: 20px;
     }
   }

@@ -9,15 +9,15 @@
 //-           ng-model="ctrl.user.password" placeholder="password" required="")
 //-         button(ng-click="ctrl.Login()" type="submit") Login
 
-form.cd-form.floating-labels
+form.ca-form.floating-labels
     fieldset
         legend Account Info
         .icon
-          label.cd-label(for='cd-email') Email
-          input#cd-email.email.error(type='email', ng-model="ctrl.user.email", name='cd-email', placeholder="email", required='')
+          label.ca-label(for='ca-email') Email
+          input#ca-email.email.error(type='email', ng-model="ctrl.user.email", name='ca-email', placeholder="email", required='')
         .icon
-          label.cd-label(for='cd-company') Password
-          input#cd-company.company(type='text', name='cd-company' ng-model="ctrl.user.password" placeholder="password" required="")
+          label.ca-label(for='ca-company') Password
+          input#ca-company.company(type='text', name='ca-company' ng-model="ctrl.user.password" placeholder="password" required="")
         div
           button(ng-click="ctrl.Login()" type='submit') Login
       //- fieldset
@@ -54,5 +54,5 @@ form.cd-form.floating-labels
       //-       li
       //-         input#cd-checkbox-3(type='checkbox')
         .icon
-          label.cd-label(for='cd-textarea') Project description
-          textarea#cd-textarea.message(name='cd-textarea', required='')
+          label.cd-label(for='ca-textarea') Project description
+          textarea#ca-textarea.message(name='ca-textarea', required='')
