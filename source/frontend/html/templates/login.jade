@@ -1,8 +1,10 @@
-h1 Login
-label(for="email") Email
-input(type="text"
-      ng-model="ctrl.user.email" placeholder="email" required="")
-label(for="password") Password
-input(type="password"
-      ng-model="ctrl.user.password" placeholder="password" required="")
-button(ng-click="ctrl.Login()") Login
+div.ca-form.floating-labels
+  fieldset
+    legend Login
+    label(for="email") Email
+    input(type="text"
+          ng-model="ctrl.user.email" placeholder="email" required="")
+    label(for="password") Password
+    input(type="password"
+          ng-model="ctrl.user.password" placeholder="password" required="")
+    button(ng-click="ctrl.Login()" type="submit") Login
