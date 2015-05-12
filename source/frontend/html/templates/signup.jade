@@ -1,8 +1,11 @@
-h1 signup
-label(for="email") Email
-input(type="text"
-      ng-model="ctrl.user.email" placeholder="email" required="")
-label(for="password") Password
-input(type="password"
-      ng-model="ctrl.user.password" placeholder="password" required="")
-button(ng-click="ctrl.signup()") signup
+form.ca-form.floating-labels
+    fieldset
+        legend Sign Up
+        .icon
+          label.ca-label(for='ca-email') Email
+          input#ca-email.email(type='email', ng-model="ctrl.user.email", name='ca-email', placeholder="email", required='')
+        .icon
+          label.ca-label(for='ca-company') Password
+          input#ca-company.company(type='text', name='ca-company' ng-model="ctrl.user.password" placeholder="password" required="")
+        div
+          button(ng-click="ctrl.signup()" type='submit') Sign Up
