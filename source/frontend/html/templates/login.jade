@@ -1,10 +1,47 @@
-div.ca-form.floating-labels
-  fieldset
-    legend Login
-    label(for="email") Email
-    input(type="text"
-          ng-model="ctrl.user.email" placeholder="email" required="")
-    label(for="password") Password
-    input(type="password"
-          ng-model="ctrl.user.password" placeholder="password" required="")
-    button(ng-click="ctrl.Login()" type="submit") Login
+form.ca-form.floating-labels
+    fieldset
+        legend Log In
+        .icon
+          label.ca-label(for='ca-email') Email
+          input#ca-email.email(type='email', ng-model="ctrl.user.email", name='ca-email', placeholder="email", required='')
+        .icon
+          label.ca-label(for='ca-company') Password
+          input#ca-company.company(type='text', name='ca-company' ng-model="ctrl.user.password" placeholder="password" required="")
+        div
+          button(ng-click="ctrl.Login()" type='submit') Login
+      //- fieldset
+      //-   legend Project Info
+      //-   div
+      //-     h4 Budget
+      //-     p.cd-select.icon
+      //-       select.budget
+      //-         option(value='0') Select Budget
+      //-         option(value='1') &lt; $5000
+      //-         option(value='2') $5000 - $10000
+      //-         option(value='3') &gt; $10000
+      //-   div
+      //-     h4 Project type
+      //-     ul.cd-form-list
+      //-       li
+      //-         input#cd-radio-1(type='radio', name='radio-button', checked='')
+      //-         label(for='cd-radio-1') Choice 1
+      //-       li
+      //-         input#cd-radio-2(type='radio', name='radio-button')
+      //-         label(for='cd-radio-2') Choice 2
+      //-       li
+      //-         input#cd-radio-3(type='radio', name='radio-button')
+      //-         label(for='cd-radio-3') Choice 3
+      //-   div
+      //-     h4 Features
+      //-     ul.cd-form-list
+      //-       li
+      //-         input#cd-checkbox-1(type='checkbox')
+      //-         label(for='cd-checkbox-1') Option 1
+      //-       li
+      //-         input#cd-checkbox-2(type='checkbox')
+      //-         label(for='cd-checkbox-2') Option 2
+      //-       li
+      //-         input#cd-checkbox-3(type='checkbox')
+        .icon
+          label.cd-label(for='ca-textarea') Project description
+          textarea#ca-textarea.message(name='ca-textarea', required='')

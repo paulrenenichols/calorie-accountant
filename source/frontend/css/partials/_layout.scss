@@ -4,6 +4,8 @@ $S:     320px;
 $M:     768px;     
 $L:     1170px;     
 
+$nav-items: 4;
+
 // media queries
 
 @mixin MQ($canvas) {
