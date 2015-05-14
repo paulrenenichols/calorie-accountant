@@ -8,7 +8,7 @@ html(ng-app="calorieAccountant")
     link(rel='stylesheet', href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' type='text/css')
     title= title
   body
-    header
+    header.ca-header
       div(id="ca-logo")
         a: img(src="img/logo-placeholder.svg" alt="Logo")
       nav.ca-main-nav
@@ -18,8 +18,7 @@ html(ng-app="calorieAccountant")
           li: a(ui-sref="signup") Sign Up
           li: a(ui-sref="mongo") MongoDB Admin
 
-    main.ca-main-content
-      div.ca-container(ui-view)
+    main.ca-main-content(ui-view)
     footer
     
     script(type='text/javascript'

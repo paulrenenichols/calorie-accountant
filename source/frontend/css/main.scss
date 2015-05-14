@@ -8,32 +8,25 @@
 Primary style
 
 -------------------------------- */
-
-html * {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*, *::after, *::before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-*, *:after, *:before {
-  @include box-sizing(border-box);
+html {
+  font-size: 62.5%;
 }
 
 body {
-  font: {
-    size: 100%;
-    family: $primary-font; // variables inside partials > _variables.scss
-  }
-  color: $color-1;
-  background-color: $color-4;
-}
-
-body, html {
-  /* important */
-  height: 100%;
+  font-size: 1.6rem;
+  font-family: "Open Sans", sans-serif;
+  color: #2b3e51;
+  background-color: #ffffff;
 }
 
 a {
-  color: $color-3;
+  color: #2c97de;
   text-decoration: none;
 }
 
@@ -153,11 +146,70 @@ Main components
       color: $color-1;
       text-transform: uppercase;
       font-weight: bold;
-      @include font-size(14px);
+      @include font-size(20px);
 
       .no-touch &:hover {
         color: $color-2;
       }
+    }
+  }
+}
+
+.ca-main-content {
+  /* you need to assign a min-height to the main content so that the children can inherit it*/
+  height: 100%;
+  position: relative;
+  z-index: index($main-elements, main-content); // see partials > _variables.scss
+}
+
+.ca-fixed-bg {
+  position: relative;
+  min-height: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  z-index: index($bg-elements, fixed-bg); // see partials > _variables.scss
+
+  h1, h2 {
+    position: absolute;
+    @include center;
+    width: 90%;
+    max-width: $L;
+
+    text-align: center;
+    @include font-size(30px);
+    text-shadow: 0 1px 3px rgba(#000, .3);
+    color: $color-4;
+  }
+
+  &.ca-bg-1 {
+    background-image: url('../img/ca-background-1.jpg');
+  }
+
+  &.ca-bg-2 {
+    background-image: url('../img/cd-background-2.jpg');
+  }
+
+  &.ca-bg-3 {
+    background-image: url('../img/cd-background-3.jpg');
+  }
+
+  &.ca-bg-4 {
+    background-image: url('../img/cd-background-4.jpg');
+  }
+
+  @include MQ(M) {
+    h1, h2 {
+      font-size: 36px;
+    }
+  }
+
+  @include MQ(L) {
+    background-attachment: fixed;
+
+    h1, h2 {
+      font-size: 48px;
+      font-weight: 300;
     }
   }
 }
@@ -171,7 +223,7 @@ Form
 .ca-form {
   width: 90%;
   max-width: $M; // breakpoints inside partials > _layout.scss
-  margin: 4em auto;
+  margin: 8em auto;
   @include clearfix;
 
   fieldset {
@@ -381,6 +433,7 @@ Form
     padding: 16px 20px;
     color: $color-4;
     font-weight: bold;
+    font-size: 1.6rem;
     float: right;
     cursor: pointer;
     @include font-smoothing;
