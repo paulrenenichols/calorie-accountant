@@ -11,8 +11,8 @@ html(ng-app="calorieAccountant")
     header.ca-header
       div(id="ca-logo")
         a: img(src="img/logo-placeholder.svg" alt="Logo")
-      nav.ca-main-nav
-        ul
+      nav.ca-main-nav(ng-init="isActive = false" ng-click="isActive = !isActive")
+        ul.menu(ng-class="{'nav': !isActive, 'nav is-visible': isActive}")
           li: a(ui-sref="home") Home
           li: a(ui-sref="login") Log In
           li: a(ui-sref="signup") Sign Up
