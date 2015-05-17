@@ -30,9 +30,14 @@ function database(mongodb){
     return deferred.promise;
   }
 
-  function getDocuments(collectionName){
+  function getDocuments(collectionName, key, value){
     
     var deferred = Q.defer();
+    var searchObject = {};
+
+    if(key && value){
+      searchObject[key] = value;
+    }
 
     mongodb.collection(collectionName, {}, function(err, collection) {
       if(err){
@@ -40,13 +45,14 @@ function database(mongodb){
         deferred.reject(err);
       }
       else {
-        collection.find().toArray( function (err, docs){
+
+        collection.find(searchObject).toArray( function (err, docs){
           if (err) {
             console.log('db getDocuments', 'error', err);
             deferred.reject(err);
           }
           else {
-            console.log('db getDocuments', 'success');
+            console.log('db getDocuments', 'success', searchObject);
             deferred.resolve(docs);
           }
         });
