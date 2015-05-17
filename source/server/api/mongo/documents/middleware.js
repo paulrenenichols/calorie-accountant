@@ -7,7 +7,7 @@ function middleware(db){
 
   function getDocuments(req, res) {
     console.log('mw getDocuments');
-    db.getDocuments(req.params.collection)
+    db.getDocuments(req.params.collection, req.params.key, req.params.value)
       .then (
         function(result) {
           console.log('mw getDocuments: ', 'success');
