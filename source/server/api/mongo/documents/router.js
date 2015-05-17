@@ -9,6 +9,8 @@ function mongoCollectionRouter(mongodb) {
 
   router.get('/:collection/documents', middleware.getDocuments);
 
+  router.get('/:collection/documents/:key/:value', middleware.getDocuments);
+
   router.post('/:collection/documents/:id', middleware.addDocument);
 
   router.delete('/:collection/documents/:id', middleware.removeDocument);
