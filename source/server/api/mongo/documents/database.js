@@ -1,10 +1,11 @@
 var Q = require('q');
+var ObjectID = require('mongodb').ObjectID;
 
 function database(mongodb){
 
   var db = {};
 
-  function addDocument(collectionName, docID) {
+  function addDocument(collectionName, document) {
 
     var deferred = Q.defer();
 
@@ -14,7 +15,7 @@ function database(mongodb){
         deferred.reject(err);
       }
       else {
-        collection.insertOne({id: docID}, {}, function (err, result){
+        collection.insertOne(document, {}, function (err, result){
           if (err) {
             console.log('db addDocument', 'error', err);
             deferred.reject(err);
@@ -30,14 +31,24 @@ function database(mongodb){
     return deferred.promise;
   }
 
-  function getDocuments(collectionName, key, value){
-    
-    var deferred = Q.defer();
+  function buildSearchObject(key, value) {
     var searchObject = {};
 
     if(key && value){
+      if(key === "_id") {
+        value = ObjectID.createFromHexString(value);
+      }
       searchObject[key] = value;
     }
+
+    return searchObject;
+  }
+
+  function getDocuments(collectionName, key, value){
+    
+    var deferred = Q.defer();
+
+    var searchObject = buildSearchObject(key, value);
 
     mongodb.collection(collectionName, {}, function(err, collection) {
       if(err){
@@ -62,8 +73,38 @@ function database(mongodb){
     return deferred.promise;
   }
 
-  function removeDocument(collectionName, docID){
+  function updateDocument(collectionName, key, value, document){
     var deferred = Q.defer();
+
+    var searchObject = buildSearchObject(key, value);
+
+    console.log('db updateDocument', 'document: ', document);
+
+    mongodb.collection(collectionName, {}, function(err, collection) {
+      if(err){
+        console.log('db updateDocument', 'error', err);
+        deferred.reject(err);
+      }
+      else {
+        collection.findOneAndUpdate(searchObject, document, {}, function (err, result){
+          if (err) {
+            console.log('db updateDocument', 'error', err);
+            deferred.reject(err);
+          }
+          else {
+            console.log('db updateDocument', 'success', result);
+            deferred.resolve(result);
+          }
+        });
+      }
+    });
+    return deferred.promise;
+  }
+
+  function removeDocument(collectionName, key, value){
+    var deferred = Q.defer();
+
+    var searchObject = buildSearchObject(key, value);
 
     mongodb.collection(collectionName, {}, function(err, collection) {
       if(err){
@@ -71,7 +112,7 @@ function database(mongodb){
         deferred.reject(err);
       }
       else {
-        collection.findOneAndDelete({"id": docID}, {}, function (err, result){
+        collection.findOneAndDelete(searchObject, {}, function (err, result){
           if (err) {
             console.log('db removeDocument', 'error', err);
             deferred.reject(err);
@@ -89,6 +130,7 @@ function database(mongodb){
   db.getDocuments = getDocuments;
   db.addDocument = addDocument;
   db.removeDocument = removeDocument;
+  db.updateDocument = updateDocument;
 
   return db;
 }
