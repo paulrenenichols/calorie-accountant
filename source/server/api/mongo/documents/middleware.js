@@ -24,14 +24,35 @@ function middleware(db){
       );
   }
 
+  function updateDocument(req, res){
+    console.log('mw updateDocument');
+    db.updateDocument(req.params.collection, req.params.key, req.params.value, req.body)
+      .then(
+        function(result) {
+          console.log('mw updateDocument: ', 'success');
+          res.status(200).json({
+            message: "document has been updated: " + result
+          });
+        },
+        function(reason) {
+          console.log('mw updateDocument: ', 'FAIL: ', reason);
+          res.status(500).json({
+            error: reason, 
+            message: 'updateDocument failure' 
+          });
+        }
+      );
+  }
+
   function addDocument(req, res) {
     console.log('mw addDocument');
-    db.addDocument(req.params.collection, req.params.id)
+    db.addDocument(req.params.collection, req.body)
       .then(
         function(result) {
           console.log('mw addDocument: ', 'success');
           res.status(200).json({
-            message: "created Document: " + result
+            message: "created document",
+            document: result
           });
         },
         function(reason) {
@@ -47,7 +68,7 @@ function middleware(db){
 
   function removeDocument(req, res) {
     console.log('mw removeDocument');
-    db.removeDocument(req.params.collection, req.params.id)
+    db.removeDocument(req.params.collection, req.params.key, req.params.value)
       .then(
         function(result) {
           console.log('mw removeDocument: ', 'success');
@@ -68,6 +89,7 @@ function middleware(db){
   mw.addDocument = addDocument;
   mw.getDocuments = getDocuments;
   mw.removeDocument = removeDocument;
+  mw.updateDocument = updateDocument;
 
   return mw;
 
