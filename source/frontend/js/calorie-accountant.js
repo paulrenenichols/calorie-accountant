@@ -176,4 +176,18 @@ angular.module('calorieAccountant', ['ui.router'])
           self.newItem = angular.copy(defaultItem);
         });
     };
+  }])
+  .controller('navCtrl', ['calorieService', function (calorieService) {
+    var self = this;
+
+    var mobileMenuOpen = false;
+
+    self.toggleMobileMenu = function() {
+      mobileMenuOpen = !mobileMenuOpen;
+    };
+
+    self.isMobileMenuOpen = function() {
+      return mobileMenuOpen;
+    };
+
   }]);
