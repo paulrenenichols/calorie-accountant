@@ -5,31 +5,6 @@ function database(mongodb){
 
   var db = {};
 
-  function addDocument(collectionName, document) {
-
-    var deferred = Q.defer();
-
-    mongodb.collection(collectionName, {}, function(err, collection) {
-      if(err){
-        console.log('db addDocument', 'error', err);
-        deferred.reject(err);
-      }
-      else {
-        collection.insertOne(document, {}, function (err, result){
-          if (err) {
-            console.log('db addDocument', 'error', err);
-            deferred.reject(err);
-          }
-          else {
-            console.log('db addDocument', 'success');
-            deferred.resolve(result);
-          }
-        });
-      }
-    });
-
-    return deferred.promise;
-  }
 
   function buildSearchObject(key, value) {
     var searchObject = {};
@@ -73,6 +48,32 @@ function database(mongodb){
     return deferred.promise;
   }
 
+  function addDocument(collectionName, document) {
+
+    var deferred = Q.defer();
+
+    mongodb.collection(collectionName, {}, function(err, collection) {
+      if(err){
+        console.log('db addDocument', 'error', err);
+        deferred.reject(err);
+      }
+      else {
+        collection.insertOne(document, {}, function (err, result){
+          if (err) {
+            console.log('db addDocument', 'error', err);
+            deferred.reject(err);
+          }
+          else {
+            console.log('db addDocument', 'success');
+            deferred.resolve(result);
+          }
+        });
+      }
+    });
+
+    return deferred.promise;
+  }
+
   function updateDocument(collectionName, key, value, document){
     var deferred = Q.defer();
 
@@ -86,7 +87,7 @@ function database(mongodb){
         deferred.reject(err);
       }
       else {
-        collection.findOneAndUpdate(searchObject, document, {}, function (err, result){
+        collection.findOneAndUpdate(searchObject, { $set: document }, {}, function (err, result){
           if (err) {
             console.log('db updateDocument', 'error', err);
             deferred.reject(err);
@@ -129,8 +130,8 @@ function database(mongodb){
 
   db.getDocuments = getDocuments;
   db.addDocument = addDocument;
-  db.removeDocument = removeDocument;
   db.updateDocument = updateDocument;
+  db.removeDocument = removeDocument;
 
   return db;
 }

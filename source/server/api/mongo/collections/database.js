@@ -4,6 +4,28 @@ function database(mongodb){
 
   var db = {};
 
+  function getCollections(){
+
+    var deferred = Q.defer();
+    // Use the admin database for the operation
+    mongodb.collections(function(err, collections) {
+      if (err) {
+        console.log('db collections', 'error', err);
+        deferred.reject({
+          database: {
+            message: "unable to read collections",
+            error: err
+          }
+        });
+      }
+      else {
+        console.log('db collections', 'success');
+        deferred.resolve(collections);
+      }
+    });
+    return deferred.promise;
+  }
+
   function addCollection(name) {
     
     var deferred = Q.defer();
@@ -11,7 +33,12 @@ function database(mongodb){
     mongodb.createCollection(name, {}, function(err, collection) {
       if (err) {
         console.log('db collections', 'error', err);
-        deferred.reject(err);
+        deferred.reject({
+          database: {
+            message: "unable to create collection '" + name + "'",
+            error: err
+          }
+        });
       }
       else {
         console.log('db collections', 'success');
@@ -30,7 +57,12 @@ function database(mongodb){
     mongodb.dropCollection(name, function(err, result){
       if (err) {
         console.log('db remove collections', 'error', err);
-        deferred.reject(err);
+        deferred.reject({
+          database: {
+            message: "unable to delete collection '" + name  + "'",
+            error: err
+          }
+        });
       }
       else {
         console.log('db remove collections', 'success', result);
@@ -40,26 +72,8 @@ function database(mongodb){
     return deferred.promise;
   }
 
-
-  function getCollections(){
-
-    var deferred = Q.defer();
-    // Use the admin database for the operation
-    mongodb.collections(function(err, collections) {
-      if (err) {
-        console.log('db collections', 'error', err);
-        deferred.reject(err);
-      }
-      else {
-        console.log('db collections', 'success');
-        deferred.resolve(collections);
-      }
-    });
-    return deferred.promise;
-  }
-
-  db.addCollection = addCollection;
-  db.getCollections = getCollections;
+  db.getCollections   = getCollections;
+  db.addCollection    = addCollection;
   db.removeCollection = removeCollection;
 
   return db;

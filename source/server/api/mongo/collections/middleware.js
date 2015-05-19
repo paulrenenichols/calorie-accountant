@@ -1,44 +1,55 @@
-var _ = require('lodash');
+var Q = require('q');
 
 
-function middleware(db){
+function middleware(api){
 
   var mw = {};
 
   function getCollections(req, res) {
     console.log('mw getCollections');
-    db.getCollections()
-      .then (
+    api.getCollections()
+      .then(
         function(result) {
           console.log('mw getCollections: ', 'success');
-          var collectionNames = _.map(result, function(value) { return value.collectionName; });
-          res.status(200).json(collectionNames);
+          res.status(200).json({
+            developerMessage: "retrieved collections",
+            collections: result
+          });
         },
         function(reason) {
-          console.log('mw getCollections: ', err);
+          console.log('mw getCollections: ', reason);
           res.status(500).json({
-            error: err, 
-            message: 'mw getCollections failure' 
+            developerMessage: 'unable to read collections',
+            error: reason
           });
         }
       );
   }
 
   function addCollection(req, res) {
-    console.log('mw addCollection');
-    db.addCollection(req.params.collection)
+    console.log('mw addCollection', JSON.stringify(req.body, null, 2));
+
+    // If the body of the request doesn't contain a collection property with a collection.name property, indicate an error to the requester
+    if (!req.body || !req.body.collection || !req.body.collection.name) {
+      res.status(400).json({
+        developerMessage: "malformed create collection request.  collection object with name property not found in request body."
+      });
+      return;
+    }
+
+    api.addCollection(req.body.collection.name)
       .then(
         function(result) {
           console.log('mw addCollection: ', 'success');
           res.status(200).json({
-            message: "created collection: " + result.collectionName
+            developerMessage: "created collection: " + req.body.collection.name
           });
         },
         function(reason) {
           console.log('mw addCollection: ', 'FAIL: ', reason);
           res.status(500).json({
-            error: reason, 
-            message: 'addCollection failure' 
+            developerMessage: "unable to create collection '" + name + "'",
+            error: reason 
           });
         }
       );
@@ -47,19 +58,21 @@ function middleware(db){
 
   function removeCollection(req, res) {
     console.log('mw removeCollection');
-    db.removeCollection(req.params.collection)
+
+    api.removeCollection(req.params.collection)
       .then(
         function(result) {
           console.log('mw removeCollection: ', 'success');
           res.status(200).json({
-            message: "killed collection (only its documents weep for its passage):" + result
+            developerMessage: "deleted collection '" + req.params.collection + "'",
+            result: result
           });
         },
         function(reason) {
           console.log('mw removeCollection: ', 'FAIL: ', reason);
           res.status(500).json({
-            error: reason, 
-            message: 'removeCollection failure' 
+            developerMessage: "unable to delete collection '" + req.params.collection + "'",
+            error: reason 
           });
         }
       );
