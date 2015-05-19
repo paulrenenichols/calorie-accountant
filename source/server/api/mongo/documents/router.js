@@ -9,6 +9,7 @@ function mongoDocumentsRouter(mongodb) {
   var middleware = require('./middleware')(api);
 
   router.get('/:collection/documents', middleware.getDocuments);
+  router.get('/:collection/documents/:id', middleware.getDocuments);
 
   router.post('/:collection/documents', middleware.addDocument);
 

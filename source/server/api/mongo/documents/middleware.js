@@ -7,7 +7,15 @@ function middleware(api){
 
   function getDocuments(req, res) {
     console.log('mw getDocuments');
-    api.getDocuments(req.params.collection, req.query.key, req.query.value)
+
+    var key = req.query.key;
+    var value = req.query.value;
+    if (req.params.id) {
+      key = "_id";
+      value =  req.params.id;
+    }
+
+    api.getDocuments(req.params.collection, key, value)
       .then (
         function(result) {
           console.log('mw getDocuments: ', 'success');
@@ -26,6 +34,14 @@ function middleware(api){
 
   function addDocument(req, res) {
     console.log('mw addDocument');
+
+    if (!req.body) {
+      res.status(400).json({
+        developerMessage: "malformed create document request."
+      });
+      return;
+    }
+
     api.addDocument(req.params.collection, req.body)
       .then(
         function(result) {
@@ -48,7 +64,22 @@ function middleware(api){
 
   function updateDocument(req, res){
     console.log('mw updateDocument');
-    api.updateDocument(req.params.collection, req.query.key, req.query.value, req.body)
+
+    if (!req.body) {
+      res.status(400).json({
+        developerMessage: "malformed update document request."
+      });
+      return;
+    }
+
+    var key = req.query.key;
+    var value = req.query.value;
+    if (req.params.id) {
+      key = "_id";
+      value =  req.params.id;
+    }
+
+    api.updateDocument(req.params.collection, key, value, req.body)
       .then(
         function(result) {
           console.log('mw updateDocument: ', 'success');
@@ -69,6 +100,14 @@ function middleware(api){
 
   function removeDocument(req, res) {
     console.log('mw removeDocument');
+
+    var key = req.query.key;
+    var value = req.query.value;
+    if (req.params.id) {
+      key = "_id";
+      value =  req.params.id;
+    }
+    
     api.removeDocument(req.params.collection, req.query.key, req.query.value)
       .then(
         function(result) {
