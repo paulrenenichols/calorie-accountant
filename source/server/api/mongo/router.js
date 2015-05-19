@@ -9,8 +9,8 @@ function mongoRouter(mongodb) {
   var mongoCollectionRouter = require('./collections/router')(mongodb);
   var mongoDocumentsRouter = require('./documents/router')(mongodb);
 
-  router.use('/', mongoCollectionRouter);
-  router.use('/', mongoDocumentsRouter);
+  router.use('/collections/', mongoCollectionRouter);
+  router.use('/collections/', mongoDocumentsRouter);
 
   return router;
 }
