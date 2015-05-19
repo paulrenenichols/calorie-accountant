@@ -15,6 +15,26 @@ angular.module('calorieAccountant', ['ui.router'])
         url: '/signup',
         templateUrl: 'templates/signup.html',
         controller: 'signupCtrl as ctrl'
+      })
+      .state('mongo', {
+        url: '/mongo',
+        templateUrl: 'templates/mongo.html',
+        controller: 'mongoCtrl as ctrl',
+        resolve: {
+          collectionsResponse: ['mongoService', function(mongoService) {
+            return mongoService.getCollections();
+          }]
+        }
+      })
+      .state('mongo.collection', {
+        url: '/:collection',
+        templateUrl: 'templates/mongo.documents.html',
+        controller: 'mongoDocumentsCtrl as ctrl',
+        resolve: {
+          documentsResponse: ['mongoService', '$stateParams', function(mongoService, $stateParams) {
+            return mongoService.getDocuments($stateParams.collection);
+          }],
+        }
       });
 
 
@@ -73,6 +93,34 @@ angular.module('calorieAccountant', ['ui.router'])
 
     service.signup = signup;
     service.auth = auth;
+
+    return service;
+  }])
+  .factory('mongoService', ['$http', function($http) {
+    var service = {};
+
+    var url = "http://localhost:3000/api/mongo";
+
+    function getCollections() {
+      var req = {
+        method: 'GET',
+        url: url + '/collections'
+      };
+
+      return $http(req);
+    }
+
+    function getDocuments(collection) {
+      var req = {
+        method: 'GET',
+        url: url + '/collections' + '/' + collection + '/documents'
+      };
+
+      return $http(req);
+    }
+
+    service.getCollections = getCollections;
+    service.getDocuments = getDocuments;
 
     return service;
   }])
@@ -189,5 +237,17 @@ angular.module('calorieAccountant', ['ui.router'])
     self.isMobileMenuOpen = function() {
       return mobileMenuOpen;
     };
+
+  }])
+  .controller('mongoCtrl', ['mongoService', 'collectionsResponse', function (mongoService, collectionsResponse) {
+    var self = this;
+
+    self.collections = collectionsResponse.data.collections;
+
+  }])
+  .controller('mongoDocumentsCtrl', ['mongoService', 'documentsResponse', function (mongoService, documentsResponse) {
+    var self = this;
+
+    self.documents = documentsResponse.data.documents;
 
   }]);

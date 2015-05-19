@@ -1,0 +1,7 @@
+h2 Documents
+
+ul
+  li(ng-repeat="document in ctrl.documents") 
+    dl
+      dt(ng-repeat-start="(key, value) in document") {{key}}
+      dd(ng-repeat-end) {{value}}
