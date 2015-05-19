@@ -158,7 +158,9 @@ Main components
 .ca-main-content {
   /* you need to assign a min-height to the main content so that the children can inherit it*/
   height: 100%;
+  width: 90%;
   position: relative;
+  margin: 8em auto;
   z-index: index($main-elements, main-content); // see partials > _variables.scss
 }
 
@@ -223,7 +225,6 @@ Form
 .ca-form {
   width: 90%;
   max-width: $M; // breakpoints inside partials > _layout.scss
-  margin: 8em auto;
   @include clearfix;
 
   fieldset {
