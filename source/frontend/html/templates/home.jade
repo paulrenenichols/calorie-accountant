@@ -1,16 +1,17 @@
-h1 Calorie Accountant
+div.ca-app-content
+  h1 Calorie Accountant
 
-input(type="text"
-      ng-model="ctrl.newItem.value")
-select(ng-model="ctrl.newItem.type" ng-options="type.label for type in ctrl.types")
-  option(value="") choose a type
-button(ng-click="ctrl.addNewItem()") Add Item
+  input(type="text"
+        ng-model="ctrl.newItem.value")
+  select(ng-model="ctrl.newItem.type" ng-options="type.label for type in ctrl.types")
+    option(value="") choose a type
+  button(ng-click="ctrl.addNewItem()") Add Item
 
-ul
-  li(ng-repeat="item in ctrl.items")
-    div
-      | Type 
-      span(ng-bind="item.type.label")
-    div
-      | Value 
-      span(ng-bind="item.value")
+  ul
+    li(ng-repeat="item in ctrl.items")
+      div
+        | Type 
+        span(ng-bind="item.type.label")
+      div
+        | Value 
+        span(ng-bind="item.value")
