@@ -25,6 +25,11 @@ body {
   background-color: #ffffff;
 }
 
+body, html {
+  /* important */
+  height: 100%;
+}
+
 a {
   color: #2c97de;
   text-decoration: none;
@@ -156,63 +161,131 @@ Main components
 }
 
 .ca-main-content {
-  /* you need to assign a min-height to the main content so that the children can inherit it*/
+  width: 100%;
+  margin: 0;
   height: 100%;
+}
+.ca-app-content {
   width: 90%;
   position: relative;
   margin: 8em auto;
   z-index: index($main-elements, main-content); // see partials > _variables.scss
 }
-
 .ca-fixed-bg {
   position: relative;
   min-height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  z-index: index($bg-elements, fixed-bg); // see partials > _variables.scss
+  z-index: 1;
+}
+.ca-fixed-bg h1, .ca-fixed-bg h2 {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  bottom: auto;
+  right: auto;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -moz-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -o-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  width: 90%;
+  max-width: 1170px;
+  text-align: center;
+  font-size: 30px;
+  font-size: 1.875rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: white;
+}
 
-  h1, h2 {
-    position: absolute;
-    @include center;
-    width: 90%;
-    max-width: $L;
+/* Landing page styles */
 
-    text-align: center;
-    @include font-size(30px);
-    text-shadow: 0 1px 3px rgba(#000, .3);
-    color: $color-4;
+.ca-fixed-bg .ca-signup-button {
+  border: none;
+  background: $color-2;
+  border-radius: .25em;
+  padding: 13px 30px;
+  margin-right: 20px;
+  color: $color-4;
+  font-weight: bold;
+  font-size: 1.6rem;
+  cursor: pointer;
+  @include font-smoothing;
+  @include appearance(none);
+}
+.ca-fixed-bg .ca-login-button {
+  border: none;
+  background: $color-2;
+  border-radius: .25em;
+  padding: 13px 30px;
+  margin-right: 20px;
+  color: $color-4;
+  font-weight: bold;
+  font-size: 1.6rem;
+  cursor: pointer;
+  @include font-smoothing;
+  @include appearance(none);
+}
+.ca-fixed-bg .ca-button-container {
+  position: absolute;
+  left: 35%;
+  top: 60%;
+}
+.ca-fixed-bg.ca-bg-1 {
+  background-image: url("../img/ca-background-1.jpg");
+}
+.ca-fixed-bg.ca-bg-2 {
+  background-image: url("../img/ca-background-2.jpg");
+}
+.ca-fixed-bg.ca-bg-3 {
+  background-image: url("../img/ca-background-3.jpg");
+}
+.ca-fixed-bg.ca-bg-4 {
+  background-image: url("../img/ca-background-4.jpg");
+}
+@media only screen and (min-width: 768px) {
+  .ca-fixed-bg h1, .ca-fixed-bg h2 {
+    font-size: 36px;
   }
-
-  &.ca-bg-1 {
-    background-image: url('../img/ca-background-1.jpg');
-  }
-
-  &.ca-bg-2 {
-    background-image: url('../img/cd-background-2.jpg');
-  }
-
-  &.ca-bg-3 {
-    background-image: url('../img/cd-background-3.jpg');
-  }
-
-  &.ca-bg-4 {
-    background-image: url('../img/cd-background-4.jpg');
-  }
-
-  @include MQ(M) {
-    h1, h2 {
-      font-size: 36px;
-    }
-  }
-
-  @include MQ(L) {
+}
+@media only screen and (min-width: 1170px) {
+  .ca-fixed-bg {
     background-attachment: fixed;
+  }
+  .ca-fixed-bg h1, .ca-fixed-bg h2 {
+    font-size: 48px;
+    font-weight: 300;
+  }
+}
 
-    h1, h2 {
-      font-size: 48px;
-      font-weight: 300;
-    }
+.ca-scrolling-bg {
+  position: relative;
+  min-height: 100%;
+  padding: 4em 0;
+  line-height: 1.6;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  z-index: 2;
+}
+.ca-scrolling-bg.ca-color-1 {
+  background-color: #3d3536;
+  color: #a6989a;
+}
+.ca-scrolling-bg.ca-color-2 {
+  background-color: $color-4;
+  color: #3d3536;
+}
+.ca-scrolling-bg.ca-color-3 {
+  background-color: #b4d7a8;
+  color: #3d3536;
+}
+@media only screen and (min-width: 768px) {
+  .ca-scrolling-bg {
+    padding: 8em 0;
+    font-size: 20px;
+    font-size: 1.25rem;
+    line-height: 2;
+    font-weight: 300;
   }
 }
 
@@ -417,7 +490,7 @@ Form
   input[type="radio"]:checked + label::after,
   input[type="checkbox"]:checked + label::before,
   input[type="checkbox"]:checked + label::after {
-    @include animation(cd-bounce .3s);
+    @include animation(ca-bounce .3s);
   }
 
   textarea {
@@ -497,7 +570,7 @@ Form
   }
 }
 
-@include keyframes(cd-bounce) {
+@include keyframes(ca-bounce) {
   0%, 100% {
     @include transform(scale(1));
   }
@@ -524,7 +597,7 @@ Custom icons
 
   [required].user {
     background: url('../img/ca-icon-user.svg') no-repeat 16px center, 
-          url('../img/cd-required.svg') no-repeat top right;
+          url('../img/ca-required.svg') no-repeat top right;
   }
 
   .company {
@@ -533,7 +606,7 @@ Custom icons
 
   [required].company {
     background: url('../img/ca-icon-company.svg') no-repeat 16px center, 
-          url('../img/cd-required.svg') no-repeat top right;
+          url('../img/ca-required.svg') no-repeat top right;
   }
 
   .email {
@@ -542,7 +615,7 @@ Custom icons
 
   [required].email {
     background: url('../img/ca-icon-email.svg') no-repeat 16px center, 
-          url('../img/cd-required.svg') no-repeat top right;
+          url('../img/ca-required.svg') no-repeat top right;
   }
 
   .budget {

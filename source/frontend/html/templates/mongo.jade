@@ -1,9 +1,10 @@
-h1 MongoDB
+div.ca-app-content
+  h1 MongoDB
 
-h2 Collections
+  h2 Collections
 
-ul
-  li(ng-repeat="collection in ctrl.collections") 
-    a(ui-sref="mongo.collection({ collection: collection.name })") {{collection.name}}
+  ul
+    li(ng-repeat="collection in ctrl.collections") 
+      a(ui-sref="mongo.collection({ collection: collection.name })") {{collection.name}}
 
-div(ui-view="")
+  div(ui-view="")

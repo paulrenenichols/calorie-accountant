@@ -10,7 +10,7 @@ html(ng-app="calorieAccountant")
   body
     header.ca-header
       div(id="ca-logo")
-        a: img(src="img/logo-placeholder.svg" alt="Logo")
+        a(ui-sref="landing-page"): img(src="img/logo-placeholder.svg" alt="Logo")
       nav.ca-main-nav(ng-controller="navCtrl as ctrl" ng-click="ctrl.toggleMobileMenu()")
         ul.menu(ng-class="{'is-visible': ctrl.isMobileMenuOpen()}")
           li: a(ui-sref="home") Home

@@ -2,7 +2,7 @@ angular.module('calorieAccountant', ['ui.router'])
   .config(['$stateProvider', function($stateProvider) {
     $stateProvider
       .state('home', {
-        url: '/',
+        url: '/home',
         templateUrl: 'templates/home.html',
         controller: 'indexCtrl as ctrl'
       })
@@ -35,12 +35,16 @@ angular.module('calorieAccountant', ['ui.router'])
             return mongoService.getDocuments($stateParams.collection);
           }],
         }
+      })
+      .state('landing-page', {
+        url: '/',
+        templateUrl: 'templates/landing-page.html'
       });
 
 
   }])
   .run(['$state', function($state) {
-    $state.go('login');
+    $state.go('landing-page');
   }])
   .factory('calorieService', ['$http', function ($http) {
     var service = {};
