@@ -162,7 +162,7 @@ Main components
 
 .ca-main-content {
   width: 100%;
-  margin: 0;
+  margin: 0 auto;
   height: 100%;
 }
 .ca-app-content {
@@ -298,6 +298,7 @@ Form
 .ca-form {
   width: 90%;
   max-width: $M; // breakpoints inside partials > _layout.scss
+  margin: 4em auto;
   @include clearfix;
 
   fieldset {
