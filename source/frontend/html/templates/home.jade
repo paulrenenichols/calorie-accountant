@@ -1,31 +1,71 @@
 header.ca-app-header
     #sublogo
-        img(src='img/cd-logo.svg', alt='Homepage')
+        img(src='img/ca-logo.svg', alt='Homepage')
       #ca-filter-menu
         a.ca-img-replace(href='#0') Menu
       #ca-add-trigger
         a.ca-img-replace(href='#0') add
 
-nav#main-nav
-    ul
-        li
-          a(href='#0') Filter
-        li
-          a(href='#0') Menu
-        li
-          a(href='#0') Goes
-        li
-          a(href='#0') Here
-
-content
+nav#main-nav.ca-filter
+    form
+        .ca-filter-block
+            h4 Search
+            .ca-filter-content
+              input(placeholder='Cereal...', type='search')
+          .ca-filter-block
+            h4 Estimated Calories
+            ul.ca-filter-content.ca-filters.list
+              li
+                input#checkbox1.filter(data-filter='.check1', type='checkbox')
+                label.checkbox-label(for='checkbox1') Option 1
+              li
+                input#checkbox2.filter(data-filter='.check2', type='checkbox')
+                label.checkbox-label(for='checkbox2') Option 2
+              li
+                input#checkbox3.filter(data-filter='.check3', type='checkbox')
+                label.checkbox-label(for='checkbox3') Option 3
+          .ca-filter-block
+            h4 Category
+            .ca-filter-content
+              .ca-select.ca-filters
+                select#selectThis.filter(name='selectThis')
+                  option(value='') Choose an option
+                  option(value='.option1') Protein
+                  option(value='.option2') Fat
+                  option(value='.option3') Carbs
+                  option(value='.option4') Sugar
+          .ca-filter-block
+            h4 Radio buttons
+            ul.ca-filter-content.ca-filters.list
+              li
+                input#radio1.filter(data-filter='', name='radioButton', checked='', type='radio')
+                label.radio-label(for='radio1') All
+              li
+                input#radio2.filter(data-filter='.radio2', name='radioButton', type='radio')
+                label.radio-label(for='radio2') Choice 2
+              li
+                input#radio3.filter(data-filter='.radio3', name='radioButton', type='radio')
+                label.radio-label(for='radio3') Choice 3
+          //button(class='save-btn') Save
+        a.ca-close(href='#0') Close
+    a.ca-close('#0')
+#content
     ul#ca-gallery-items.ca-container
-        li(ng-repeat='item in ctrl.items')
-            div
-                | Type
-                span(ng-bind='item.type.label')
-            div
-                | Value
-                span(ng-bind='item.type.label')
+        li
+            img(src='img/thumb.jpg')
+        li
+            img(src='img/thumb.jpg')
+        li
+            img(src='img/thumb.jpg')
+        li
+            img(src='img/thumb.jpg')
+//        li(ng-repeat='item in ctrl.items')
+//            div
+//                | Type
+//                span(ng-bind='item.type.label')
+//            div
+//                | Value
+//                span(ng-bind='item.type.label')
 
 #ca-shadow-layer
 
