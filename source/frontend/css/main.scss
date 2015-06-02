@@ -52,6 +52,12 @@ Modules - reusable parts of our design
     clear: both;
   }
 }
+.ca-img-replace {
+    display: inline-block;
+    overflow: hidden;
+    text-indent: 100%;
+    white-space: nowrap;
+}
 
 /* -------------------------------- 
 
@@ -67,7 +73,8 @@ Main components
   height: $header-height-S;
   background: rgba($color-4, .95);
   box-shadow: 0 1px 2px rgba(#000, .2);
-  z-index: index($main-elements, navigation); // see partials > _variables.scss
+/*   z-index: index($main-elements, navigation); // see partials > _variables.scss */
+  z-index: 3;
   @include clearfix;
 
   #ca-logo {
@@ -162,8 +169,12 @@ Main components
 
 .ca-main-content {
   width: 100%;
-  margin: 0;
+  margin-top: $header-height-S;
   height: 100%;
+  
+  @include MQ(M) {
+  	margin-top: $header-height-M;
+  }
 }
 .ca-app-content {
   width: 90%;
@@ -298,6 +309,7 @@ Form
 .ca-form {
   width: 90%;
   max-width: $M; // breakpoints inside partials > _layout.scss
+  margin: 4em auto;
   @include clearfix;
 
   fieldset {
@@ -675,3 +687,408 @@ FLoating labels
     }
   }
 }
+
+
+/* -------------------------------- 
+
+app header / menus
+
+-------------------------------- */
+
+.ca-app-header {
+	position: relative;
+	top: 40;
+	left: 0;
+	height: 50px;
+	width: 100%;
+	background: $header-bg;
+	text-align: center;
+	box-shadow: 0 2px 0 rgba(#000, .1);
+}
+
+#sublogo {
+	padding-top: 5px;
+
+	/* delete this property if you don't want your logo to scale down on mobile devices */
+	@include transform(scale(.8)); 
+
+/* 
+	@include MQ(L) {
+		padding-top: 20px;
+		position: absolute;
+		// logo left margin on Dekstop 
+		left: 2.4em; 
+		top: 0;
+		@include transform(scale(1));
+	}
+ */
+}
+
+.ca-app-header #ca-filter-menu, #ca-add-trigger {
+	position: absolute;
+	top: 0;
+	height: 100%;
+
+	a {
+		width: 60px;
+		height: 100%;
+	}
+}
+
+.ca-app-header #ca-filter-menu {
+	left: 0;
+
+	a {
+		background: darken($header-bg, 5%) url('../img/ca-icon-filter.svg') no-repeat center center;
+	}
+
+/* 
+	@include MQ(L) {
+		display: none;
+	}
+ */
+}
+
+.ca-app-header #ca-add-trigger {
+	right: 0;
+
+	a {
+		background: darken($header-bg, 5%) url('../img/ca-plus.svg') no-repeat center center;
+	}
+
+	@include MQ(L) {
+		/* add right margin on desktop */
+		right: 0;
+
+		a {
+			position: relative;
+			width: 100px;
+			border-left: none;
+			background-color: darken($header-bg, 5%);
+		}
+	}
+}
+
+#main-nav, #ca-add-menu {
+	position: fixed;
+	top: $header-height-M;
+	height: 100%;
+	width: 260px;
+
+	/* header height */
+	padding: $header-height-M 20px; 
+
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+
+	box-shadow: 0 0 20px rgba(#000, .2);
+
+/* 	z-index: $sidebar-zindex; */
+
+	@include MQ(M) {
+		width: 350px;
+	}
+
+	@include MQ(L) {
+		width: 30%;
+
+		/* header height has changed */
+		padding-top: 80px; 
+	}
+}
+
+#main-nav {
+	left: -100%;
+	background: #FFF;
+
+	@include transition(left .3s);
+
+	&.speed-in {
+		left: 0;
+		z-index: -1;
+	}
+
+	ul {
+
+		a {
+			display: block;
+			height: 50px;
+			line-height: 50px;
+			padding: 0 1em;
+			border-bottom: 1px solid $border;
+		}
+
+		.current {
+			box-shadow: inset 3px 0 $link;
+		}
+	}
+
+/* 
+	@include MQ(L) { 
+		position: absolute;
+		height: auto;
+		width: auto;
+		left: auto;
+		right: 8em;
+		padding-top: 0;
+		top: 0;
+		background: transparent;
+		box-shadow: none;
+
+		line-height: 80px; 
+
+		z-index: $header-zindex;
+
+		li {
+			display: inline-block;
+			margin-left: 1em;
+		}
+
+		ul a {
+			display: inline-block;
+			height: auto;
+			line-height: 1;
+			padding: 1em 1.4em;
+			border-bottom: none;
+			color: rgba(#FFF, .8);
+			@include border-radius;
+
+			&.current {
+				box-shadow: none;
+				background: $link;
+				color: #FFF;
+			}
+
+			.no-touch &:hover {
+				background: $link;
+				color: #FFF;
+			}
+		}
+	}
+ */
+
+	.no-js & {
+		position: fixed;
+	}
+}
+
+#ca-add-menu {
+	right: -100%;
+	background: #FFF;
+
+	@include transition(right .3s);
+
+	&.speed-in {
+		right: 0;
+		z-index: -1;
+	}
+
+	> * {
+		padding: 0 1em;
+	}
+
+	h2 {
+		@include font-size(14px);
+		font-weight: bold;
+		text-transform: uppercase;
+		margin: 1em 0;
+	}
+
+	.ca-add-items {
+		padding: 0;
+
+		li {
+			position: relative;
+			padding: 1em;
+			border-top: 1px solid $border;
+
+			&:last-child {
+				border-bottom: 1px solid $border;
+			}
+		}
+	}
+
+/* 
+	.ca-qty, .ca-price {
+		color: $light-text;
+	}
+
+	.ca-price {
+		margin-top: .4em;
+	}
+ */
+
+	.ca-item-remove {
+		position: absolute;
+		right: 1em;
+		@include center(y); // see mixin inside partials > _mixins.scss
+		width: 32px;
+		height: 32px;
+		border-radius: 50%;
+		background: url('../img/ca-remove-item.svg') no-repeat center center;
+
+		.no-touch &:hover {
+			background-color: $border;
+		}
+	}
+
+	.ca-add-total {
+		padding-top: 1em;
+		padding-bottom: 1em;
+
+		span {
+			float: right;
+		}
+
+		&::after { /* clearfix */
+			content: '';
+			display: table;
+			clear: both;
+		}
+	}
+
+/* 
+	.checkout-btn {
+		display: block;
+		width: 100%;
+		height: 60px;
+		line-height: 60px;
+		background: $green;
+		color: #FFF;
+		text-align: center;
+
+		.no-touch &:hover {
+			background: lighten($green, 10%);
+		}
+	}
+ */
+
+	.ca-go-to-add {
+		text-align: center;
+		margin: 1em 0;
+
+		a {
+			text-decoration: underline;
+		}
+	}
+
+	@include MQ(L) {
+		> * {
+			padding: 0 2em;
+		}
+
+		.ca-add-items li {
+			padding: 1em 2em;
+		}
+
+		.ca-item-remove {
+			right: 2em;
+		}
+	}
+}
+
+/* -------------------------------- 
+
+xgallery 
+
+-------------------------------- */
+
+content {
+	position: relative;
+	top: $header-height-M;
+	min-height: 100%;
+	background: #FFF;
+	padding-top: 50px;
+
+	z-index: 2;
+
+	@include MQ(M) {
+		/* padding-top: 70px; */
+	}
+
+/* 
+	@include MQ(L) {
+		padding-top: 120px;
+	}
+ */
+}
+
+#ca-gallery-items {
+	li {
+		margin-bottom: 1.5em;
+
+		img {
+			width: 100%;
+			display: block;
+/* 			@include border-radius; */
+		}
+	}
+
+	@include MQ(M) {
+		li {
+			@include column(.48); // see how this mixin works inside partials > _layout.scss
+			margin-bottom: 2em;
+			margin-right: 4%;
+
+			&:nth-child(2n) {
+				margin-right: 0;
+			}
+		}
+	}
+
+/* 
+	@include MQ(L) {
+		li {
+			@include column(.31);
+			margin-bottom: 2.5em;
+			margin-right: 3.5%;
+
+			&:nth-child(2n) {
+				margin-right: 3.5%;
+			}
+
+			&:nth-child(3n) {
+				margin-right: 0;
+			}
+		}
+	}
+ */
+}
+
+#ca-shadow-layer {
+	position: fixed;
+	min-height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: $shadow-layer-bg;
+	cursor: pointer;
+
+	z-index: 1;
+
+	display: none;
+
+	&.is-visible {
+		display: block;
+		@include animation(ca-fade-in .3s);
+	}
+}
+
+/* -------------------------------- 
+
+xkeyframes 
+
+-------------------------------- */
+
+@include keyframes(ca-fade-in) {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+
+
+

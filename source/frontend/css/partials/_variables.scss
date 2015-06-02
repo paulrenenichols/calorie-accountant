@@ -9,6 +9,7 @@ $color-5: #E94B35; // error red
 $text-color: #ffffff;
 
 $nav-bg: #343c55;
+$header-bg: #31353D;
 
 $body-bg: #485274;
 $nav-container-bg: #485274;
@@ -33,3 +34,11 @@ $primary-font: 'Roboto', sans-serif;
 
 $main-elements: main-content, navigation;
 $bg-elements: fixed-bg, scrolling-bg;
+
+/* 
+$header-zindex: 3;
+$sidebar-zindex: 3;
+ */
+$border: #E0E6EF;
+$link: #435779;
+$shadow-layer-bg: rgba(67, 87, 121, 0.6) none repeat scroll 0% 0%;

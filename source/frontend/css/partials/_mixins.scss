@@ -10,6 +10,11 @@
   font-size: calculateRem($size);
 }
 
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  background-clip: padding-box;  // stops bg color from leaking outside the border
+}
+
 // center vertically and/or horizontally an absolute positioned element
 
 @mixin center($xy:xy) {
