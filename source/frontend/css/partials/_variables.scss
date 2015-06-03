@@ -9,6 +9,7 @@ $color-5: #E94B35; // error red
 $text-color: #ffffff;
 
 $nav-bg: #343c55;
+$header-bg: #31353D;
 
 $body-bg: #485274;
 $nav-container-bg: #485274;
@@ -31,5 +32,18 @@ $primary-font: 'Roboto', sans-serif;
 
 //z-index - order the elements from the lowest z-index(left) to the highest(right)
 
+<<<<<<< HEAD
 $main-elements: main-content, ca-scrolling-bg, navigation;
 $bg-elements: fixed-bg, scrolling-bg;
+=======
+$main-elements: main-content, navigation;
+$bg-elements: fixed-bg, scrolling-bg;
+
+/* 
+$header-zindex: 3;
+$sidebar-zindex: 3;
+ */
+$border: #E0E6EF;
+$link: #435779;
+$shadow-layer-bg: rgba(67, 87, 121, 0.6) none repeat scroll 0% 0%;
+>>>>>>> 2a72a60b330e7fea790aec37556d2804229da722
