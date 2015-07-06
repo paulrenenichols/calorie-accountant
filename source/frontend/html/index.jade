@@ -21,9 +21,11 @@ html(ng-app="calorieAccountant")
     main.ca-main-content(ui-view="")
     footer
     
+    script!=apiUrl
     script(type='text/javascript'
            src='vendor/js/angular.js')
     script(type='text/javascript'
            src='js/calorie-accountant.js')
     script(type='text/javascript'
            src='vendor/js/angular-ui-router.js')
+    
