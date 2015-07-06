@@ -46,10 +46,19 @@ angular.module('calorieAccountant', ['ui.router'])
   .run(['$state', function($state) {
     $state.go('landing-page');
   }])
-  .factory('calorieService', ['$http', function ($http) {
+  .factory('configService', ['$window', function($window) {
     var service = {};
 
-    var url = "http://localhost:3000/api/items";
+    service.apiUrl = $window.apiUrl;
+
+    return service;
+  }])
+  .factory('calorieService', ['$http', 'configService', function ($http, configService) {
+    var service = {};
+
+    console.log('configService.apiUrl', configService.apiUrl);
+
+    var url = configService.apiUrl + "api/items";
 
     function getItems() {
       return $http.get(url);
@@ -70,10 +79,10 @@ angular.module('calorieAccountant', ['ui.router'])
     service.addItem = addItem;
     return service;
   }])
-  .factory('usersService', ['$http', function ($http) {
+  .factory('usersService', ['$http', 'configService', function ($http, configService) {
     var service = {};
 
-    var url = "http://localhost:3000/api/users";
+    var url = configService.apiUrl + "api/users";
 
     function signup(user) {
       var req = {
@@ -100,10 +109,10 @@ angular.module('calorieAccountant', ['ui.router'])
 
     return service;
   }])
-  .factory('mongoService', ['$http', function($http) {
+  .factory('mongoService', ['$http', 'configService', function($http, configService) {
     var service = {};
 
-    var url = "http://localhost:3000/api/mongo";
+    var url = configService.apiUrl + "api/mongo";
 
     function getCollections() {
       var req = {
