@@ -32,7 +32,9 @@ var buildConfig = {
   frontend: {
     index: {
       src: 'source/frontend/html/index.jade',
-      dest: 'build/public'
+      dest: 'build/public',
+      title: "Calorie Accountant",
+      apiUrl: "window.apiUrl = 'http://localhost:3000/';"
     },
     templates: {
       src: 'source/frontend/html/templates/**/*.jade',
@@ -68,6 +70,16 @@ var buildConfig = {
     test: {
       karmaConfigPath: '/test/karma.conf.js'
     }
+  },
+
+  server: {
+    js: {
+      src: 'source/server/**/*.js'
+    },
+    test: {
+      src: 'test/server/**/*.js'
+    },
+    all: 'source/server/**/*'
   }
 };
 
@@ -100,7 +112,7 @@ gulp.task('lint-frontend', function () {
 
 gulp.task('lint-server', function () {
   
-  return gulp.src('source/server/**/*.js')
+  return gulp.src(buildConfig.server.js.src)
     .pipe(jshint())
     .pipe(jshint.reporter('jshint-stylish'))
     .pipe(jshint.reporter('fail'));
@@ -118,7 +130,7 @@ gulp.task('test-frontend', ['lint-frontend'], function (done) {
 });
 
 gulp.task('test-server', ['lint-server'], function (done) {
-  return gulp.src('test/server/**/*.js', {read: false})
+  return gulp.src(buildConfig.server.test.src, {read: false})
           .pipe(mocha({reporter: 'spec'}));
 });
 
@@ -132,7 +144,7 @@ gulp.task('build-clean', ['test-server'], function () {
 // Server Build Tasks
 
 gulp.task('build-server', ['build-clean'], function () {
-  return gulp.src('source/server/**/*')
+  return gulp.src(buildConfig.server.all)
     .pipe(gulp.dest('build'));
 });
 
@@ -159,7 +171,8 @@ gulp.task('build-frontend-index-html', ['test-frontend'], function () {
     .pipe(jade({
       pretty: true,
       locals: {
-        title: "Calorie Accountant"
+        title: buildConfig.frontend.index.title,
+        apiUrl: buildConfig.frontend.index.apiUrl
       }
     }))
     .pipe(gulp.dest(buildConfig.frontend.index.dest));
