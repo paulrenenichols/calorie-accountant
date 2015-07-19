@@ -1,4 +1,5 @@
-var gulp = require('gulp'),
+var parseArgs = require('minimist'),
+    gulp = require('gulp'),
     jade = require('gulp-jade'),
     sass = require('gulp-sass'),
     run = require('gulp-run'),
@@ -27,14 +28,19 @@ var consoleStream = through2.obj(function(file, encoding, cb) {
 
 var karma = require('karma').server;
 
+var argv = parseArgs(process.argv.slice(2));
+
+var appConfigFile = (argv['--appconfig'] || './appConfig.json')
+
+var appConfig = require(appConfigFile);
+
 var buildConfig = {
   
   frontend: {
     index: {
       src: 'source/frontend/html/index.jade',
       dest: 'build/public',
-      title: "Calorie Accountant",
-      apiUrl: "window.apiUrl = 'http://localhost:3000/';"
+      title: "Calorie Accountant"
     },
     templates: {
       src: 'source/frontend/html/templates/**/*.jade',
@@ -148,6 +154,11 @@ gulp.task('build-server', ['build-clean'], function () {
     .pipe(gulp.dest('build'));
 });
 
+gulp.task('build-server-config', ['build-server'], function () {
+  return gulp.src(appConfigFile)
+    .pipe(gulp.dest('build'));
+});
+
 // Frontend Build Tasks
 
 gulp.task('build-frontend-copy-img', function () {
@@ -172,7 +183,7 @@ gulp.task('build-frontend-index-html', ['test-frontend'], function () {
       pretty: true,
       locals: {
         title: buildConfig.frontend.index.title,
-        apiUrl: buildConfig.frontend.index.apiUrl
+        apiUrl: appConfig.apiUrl
       }
     }))
     .pipe(gulp.dest(buildConfig.frontend.index.dest));
@@ -219,7 +230,7 @@ gulp.task('build-frontend-js-project', function () {
 gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-templates-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img'], function(done) { done(); });
 
 
-gulp.task('server-build-install', ['build-server'], function (cb) {
+gulp.task('server-build-install', ['build-server-config'], function (cb) {
   var buildPackageJsonWithPrefix = {
     prefix: 'build'
   };
