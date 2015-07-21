@@ -1,0 +1,4 @@
+{
+  "apiUrl": "window.apiUrl = 'http://localhost:3000/';",
+  "mongoUrl": "mongodb://localhost:27017/calorie-accountant"
+}
