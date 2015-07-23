@@ -1,4 +1,5 @@
-var gulp = require('gulp'),
+var parseArgs = require('minimist'),
+    gulp = require('gulp'),
     jade = require('gulp-jade'),
     sass = require('gulp-sass'),
     run = require('gulp-run'),
@@ -27,14 +28,19 @@ var consoleStream = through2.obj(function(file, encoding, cb) {
 
 var karma = require('karma').server;
 
+var argv = parseArgs(process.argv.slice(2));
+
+var appConfigFile = (argv['--appconfig'] || './appConfig.json')
+
+var appConfig = require(appConfigFile);
+
 var buildConfig = {
   
   frontend: {
     index: {
       src: 'source/frontend/html/index.jade',
       dest: 'build/public',
-      title: "Calorie Accountant",
-      apiUrl: "window.apiUrl = 'http://localhost:3000/';"
+      title: "Calorie Accountant"
     },
     templates: {
       src: 'source/frontend/html/templates/**/*.jade',
@@ -83,33 +89,15 @@ var buildConfig = {
   }
 };
 
-// NPM install for project
 
-gulp.task('npm-install', function (cb) {
 
-  npm.load(projectPackageJson, function () {
-    npm.commands.install(function (error) {
-      if (error) {
-        cb(error);
-      }
-      else {
-        cb();
-      }
-    });
-  });
-})
+/*
+ *
+ *  Server Tasks
+ *
+ */
 
-// Lint tasks
-
-gulp.task('lint-frontend', function () {
-  
-  return gulp.src(buildConfig.frontend.js.project.src)
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'));
-
-});
-
+// jsHint task for server code
 gulp.task('lint-server', function () {
   
   return gulp.src(buildConfig.server.js.src)
@@ -119,85 +107,39 @@ gulp.task('lint-server', function () {
 
 });
 
-
-// Test tasks
-
-gulp.task('test-frontend', ['lint-frontend'], function (done) {
-  karma.start({
-    configFile: __dirname + buildConfig.frontend.test.karmaConfigPath,
-    singleRun: true
-  }, done);
-});
-
+// mocha tests for server
 gulp.task('test-server', ['lint-server'], function (done) {
   return gulp.src(buildConfig.server.test.src, {read: false})
           .pipe(mocha({reporter: 'spec'}));
 });
 
-// Build Clean Task
-
-gulp.task('build-clean', ['test-server'], function () {
+// Task that removes build folder
+gulp.task('build-clean', function () {
   return gulp.src('build', {read: false})
     .pipe(clean());
 })
 
-// Server Build Tasks
-
-gulp.task('build-server', ['build-clean'], function () {
+// Task that copies server files into build directory
+gulp.task('build-server', ['build-clean', 'test-server'], function () {
   return gulp.src(buildConfig.server.all)
     .pipe(gulp.dest('build'));
 });
 
-// Frontend Build Tasks
-
-gulp.task('build-frontend-copy-img', function () {
-  return gulp.src(buildConfig.frontend.img.src)
-    .pipe(gulp.dest(buildConfig.frontend.img.dest));
+gulp.task('build-server-config', ['build-clean'], function () {
+  return gulp.src(appConfigFile)
+    .pipe(gulp.dest('build'));
 });
 
-gulp.task('build-frontend-css', function () {
 
-  util.log(buildConfig.frontend.css.project.src, buildConfig.frontend.css.vendor.src);
-  util.log(buildConfig.frontend.css.project.dest);
-  return gulp.src([buildConfig.frontend.css.vendor.src, buildConfig.frontend.css.project.src])
-    .pipe(sass())
-    .pipe(gulp.dest(buildConfig.frontend.css.project.dest));
 
-});
+/*
+ *
+ *  Frontend Tasks
+ *
+ */
 
-gulp.task('build-frontend-index-html', ['test-frontend'], function () {
-  
-  return gulp.src(buildConfig.frontend.index.src)
-    .pipe(jade({
-      pretty: true,
-      locals: {
-        title: buildConfig.frontend.index.title,
-        apiUrl: buildConfig.frontend.index.apiUrl
-      }
-    }))
-    .pipe(gulp.dest(buildConfig.frontend.index.dest));
-
-});
-
-gulp.task('build-frontend-templates-html', ['test-frontend'], function () {
-  
-  return gulp.src(buildConfig.frontend.templates.src)
-    .pipe(jade({
-      pretty: true,
-      locals: {}
-    }))
-    .pipe(gulp.dest(buildConfig.frontend.templates.dest));
-
-});
-
-gulp.task('build-frontend-js-vendor', function () {
-  
-  return gulp.src(buildConfig.frontend.js.vendor.src)
-    .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
-
-});
-
-gulp.task('build-frontend-js-project-lint', ['test-frontend'], function () {
+// jsHint task for frontend code
+gulp.task('lint-frontend', function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(jshint())
@@ -209,17 +151,78 @@ gulp.task('build-frontend-js-project-lint', ['test-frontend'], function () {
 
 });
 
-gulp.task('build-frontend-js-project', function () {
+// karma-mocha tests for frontend
+gulp.task('test-frontend', ['lint-frontend'], function (done) {
+  karma.start({
+    configFile: __dirname + buildConfig.frontend.test.karmaConfigPath,
+    singleRun: true
+  }, done);
+});
+
+// Frontend Build Tasks
+
+gulp.task('build-frontend-copy-img', ['build-clean'], function () {
+  return gulp.src(buildConfig.frontend.img.src)
+    .pipe(gulp.dest(buildConfig.frontend.img.dest));
+});
+
+gulp.task('build-frontend-css', ['build-clean'], function () {
+
+  util.log(buildConfig.frontend.css.project.src, buildConfig.frontend.css.vendor.src);
+  util.log(buildConfig.frontend.css.project.dest);
+  return gulp.src([buildConfig.frontend.css.vendor.src, buildConfig.frontend.css.project.src])
+    .pipe(sass())
+    .pipe(gulp.dest(buildConfig.frontend.css.project.dest));
+
+});
+
+gulp.task('build-frontend-index-html', ['build-clean'], function () {
+  
+  return gulp.src(buildConfig.frontend.index.src)
+    .pipe(jade({
+      pretty: true,
+      locals: {
+        title: buildConfig.frontend.index.title,
+        apiUrl: appConfig.apiUrl
+      }
+    }))
+    .pipe(gulp.dest(buildConfig.frontend.index.dest));
+
+});
+
+gulp.task('build-frontend-templates-html', ['build-clean'], function () {
+  
+  return gulp.src(buildConfig.frontend.templates.src)
+    .pipe(jade({
+      pretty: true,
+      locals: {}
+    }))
+    .pipe(gulp.dest(buildConfig.frontend.templates.dest));
+
+});
+
+gulp.task('build-frontend-js-vendor', ['build-clean'], function () {
+  
+  return gulp.src(buildConfig.frontend.js.vendor.src)
+    .pipe(gulp.dest(buildConfig.frontend.js.vendor.dest));
+
+});
+
+gulp.task('build-frontend-js-project', ['test-frontend', 'build-clean'], function () {
   
   return gulp.src(buildConfig.frontend.js.project.src)
     .pipe(gulp.dest(buildConfig.frontend.js.project.dest));
 
 });
 
+// Main frontend build task
 gulp.task('build-frontend', ['build-frontend-index-html', 'build-frontend-templates-html', 'build-frontend-js-project', 'build-frontend-js-vendor', 'build-frontend-css', 'build-frontend-copy-img'], function(done) { done(); });
 
+// Build all, don't npm install
+gulp.task('build-all', ['build-frontend', 'build-server', 'build-server-config'], function(done) { done(); });
 
-gulp.task('server-build-install', ['build-server'], function (cb) {
+
+gulp.task('install', ['build-all'], function (cb) {
   var buildPackageJsonWithPrefix = {
     prefix: 'build'
   };
@@ -239,7 +242,7 @@ gulp.task('server-build-install', ['build-server'], function (cb) {
 })
 
 
-gulp.task('run', function (cb) {
+gulp.task('start', function (cb) {
  
   var runDirectoryPrefix = {
     prefix: 'build'
@@ -279,7 +282,7 @@ gulp.task('stop', function (cb) {
   });
 });
 
-gulp.task('watch-frontend', ['build-frontend'], function () {
+gulp.task('watch-frontend', ['install'], function () {
   gulp.watch([buildConfig.frontend.js.project.src,
               buildConfig.frontend.js.test.src,
               buildConfig.frontend.index.src,
