@@ -2,7 +2,7 @@ mindless-chatter
 ================
 
 # Dependencies
-You must have MongoDB installed locally and running.
+You must have [MongoDB](http://docs.mongodb.org/manual/installation/) installed locally and running.
 
 # Build Process
 To build the project, run *gulp install*.
