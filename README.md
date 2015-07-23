@@ -1,4 +1,4 @@
-mindless-chatter
+Calorie Accountant
 ================
 
 # Dependencies
