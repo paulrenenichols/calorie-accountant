@@ -1,78 +1,108 @@
-header.ca-app-header
-    #sublogo
-        img(src='img/ca-logo.svg', alt='Homepage')
-      #ca-filter-menu
-        a.ca-img-replace(href='#0') Menu
-      #ca-add-trigger
-        a.ca-img-replace(href='#0') add
+main.ca-main-content
+    nav.ca-side-nav
+        ul
+          li.ca-label Nutrition
+          li.has-children.images.active
+            a(href='#0') Diary
+            ul
+              li
+                a(href='#0') Calories
+              li
+                a(href='#0') Exercise
+          li.has-children.overview
+            a(href='#0') Dashboard
+            ul
+              li
+                a(href='#0') Calories
+              li
+                a(href='#0') Nutrition
+              li
+                a(href='#0') Challenges
+          li.has-children.notifications
+            a(href='#0') Notifications
+              span.count 3
+            ul
+              li
+                a(href='#0') All Notifications
+              li
+                a(href='#0') Friends / Activity
+              li
+                a(href='#0') Other
+          li.has-children.comments
+            a(href='#0') Comments
+            ul
+              li
+                a(href='#0') All Comments
+              li
+                a(href='#0') Edit Comment
+              li
+                a(href='#0') Delete Comment
+        ul
+          li.ca-label Meal Planning
+          li.has-children.images
+            a(href='#0') Browse Recipes
+            ul
+              li
+                a(href='#0') All Images
+              li
+                a(href='#0') Edit Image
+          li.has-children.bookmarks
+            a(href='#0') Saved Recipes / Lists
+            ul
+              li
+                a(href='#0') Saved Recipes
+              li
+                a(href='#0') Shopping List
+              li
+                a(href='#0') Edit Recipes
+              li
+                a(href='#0') Import Recipes
+          li.has-children.users
+            a(href='#0') User Recipes
+            ul
+              li
+                a(href='#0') All Users
+              li
+                a(href='#0') Edit User
+              li
+                a(href='#0') Add User
+        ul
+          li.ca-label Actions
+          li.action-btn
+            a(href='#0') + Quick Add
 
-nav#main-nav.ca-filter
-    form
-        .ca-filter-block
-            h4 Search
-            .ca-filter-content
-              input(placeholder='Cereal...', type='search')
-          .ca-filter-block
-            h4 Estimated Calories
-            ul.ca-filter-content.ca-filters.list
-              li
-                input#checkbox1.filter(data-filter='.check1', type='checkbox')
-                label.checkbox-label(for='checkbox1') Option 1
-              li
-                input#checkbox2.filter(data-filter='.check2', type='checkbox')
-                label.checkbox-label(for='checkbox2') Option 2
-              li
-                input#checkbox3.filter(data-filter='.check3', type='checkbox')
-                label.checkbox-label(for='checkbox3') Option 3
-          .ca-filter-block
-            h4 Category
-            .ca-filter-content
-              .ca-select.ca-filters
-                select#selectThis.filter(name='selectThis')
-                  option(value='') Choose an option
-                  option(value='.option1') Protein
-                  option(value='.option2') Fat
-                  option(value='.option3') Carbs
-                  option(value='.option4') Sugar
-          .ca-filter-block
-            h4 Radio buttons
-            ul.ca-filter-content.ca-filters.list
-              li
-                input#radio1.filter(data-filter='', name='radioButton', checked='', type='radio')
-                label.radio-label(for='radio1') All
-              li
-                input#radio2.filter(data-filter='.radio2', name='radioButton', type='radio')
-                label.radio-label(for='radio2') Choice 2
-              li
-                input#radio3.filter(data-filter='.radio3', name='radioButton', type='radio')
-                label.radio-label(for='radio3') Choice 3
-          //button(class='save-btn') Save
-        a.ca-close(href='#0') Close
-    a.ca-close('#0')
-#content
-    ul#ca-gallery-items.ca-container
-        li
-            img(src='img/thumb.jpg')
-        li
-            img(src='img/thumb.jpg')
-        li
-            img(src='img/thumb.jpg')
-        li
-            img(src='img/thumb.jpg')
-//        li(ng-repeat='item in ctrl.items')
-//            div
-//                | Type
-//                span(ng-bind='item.type.label')
-//            div
-//                | Value
-//                span(ng-bind='item.type.label')
-
-#ca-shadow-layer
-
-#ca-add-menu
-  h2 Add Menu
-  input(type='text'
-        ng-model='ctrl.newItem.value')
-  select(ng-model='ctrl.newItem.type' ng-options='type.label for type in ctrl.types')
-        option(value='') choose a type
-  button(ng-click='ctrl.addNewItem()') Add Item
+      .content-wrapper
+          ul.ca-diary-items
+            li(ng-repeat="item in ctrl.items")
+              div
+                | Entry Type: 
+                span(ng-bind="item.type.label")
+              div
+                | Value: 
+                span(ng-bind="item.value")
+          form.ca-form.floating-labels
+              fieldset
+                  legend Add Calories
+                  .ca-filter-block
+                    h4 Food Category
+                    .ca-filter-content
+                      .ca-select.ca-filters
+                        select#selectThis.filter(ng-model='ctrl.newItem.type' ng-options='type.label for type in ctrl.types')
+                          option(value='') Choose a category
+                          option(value='.option1') Protein
+                          option(value='.option2') Fat
+                          option(value='.option3') Carbs
+                          option(value='.option4') Sugar
+                  .icon
+                    label.ca-label(for='ca-email') Estimated Calories
+                    input#ca-email.email(type='text', ng-model="ctrl.newItem.value")
+                  div
+                    button(ng-click="ctrl.addNewItem()" type='submit') Save Item
+                      //- #ca-add-menu
+                      //- h2 Add Menu
+                      //- input(type='text'
+                      //-       ng-model='ctrl.newItem.value')
+                      //- select(ng-model='ctrl.newItem.type' ng-options='type.label for type in ctrl.types')
+                      //-       option(value='') choose a type
+                      //- button(ng-click='ctrl.addNewItem()') Add Item
+          //- //button(class='save-btn') Save
